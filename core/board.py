@@ -2,11 +2,11 @@ import numpy as np
 from bitboard import bb, printBitBoard
 from piece import piece
 
-height = 3
-width = 3
+HEIGHT = 6
+WIDTH = 6
 
 H = 1
-V = 3
+V = WIDTH
 
 class board:
     def __init__(self, char_board = None):
@@ -20,14 +20,14 @@ class board:
         self.pieces = {}
 
         if char_board is not None:
-            if len(char_board) != height * width:
+            if len(char_board) != HEIGHT * WIDTH:
                 print('Invalid char_board')
                 return
 
             char_board = np.array(char_board)
 
             for label in np.unique(char_board):
-                if label == '.':
+                if label == '.' or label == 'o':
                     continue
 
                 positions = np.where(char_board == label)[0]
@@ -81,7 +81,7 @@ class board:
         pass
 
     def print(self):
-        new_board = [' ' for _ in range(height * width)]
+        new_board = [' ' for _ in range(HEIGHT * WIDTH)]
 
         for label in self.pieces:
             pos = self.pieces[label].get_position()
@@ -92,18 +92,5 @@ class board:
                 new_board[pos] = label
                 pos += stride
             
-        new_board = np.array(new_board).reshape((height, width))
+        new_board = np.array(new_board).reshape((HEIGHT, WIDTH))
         print(new_board)
-
-
-char_board = list("a.bacb.c.")
-
-b = board(char_board)
-
-b.print()
-
-b.move_piece('a', 1)
-
-print('After move "a" by 1 step: ')
-
-b.print()

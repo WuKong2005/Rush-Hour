@@ -1,11 +1,11 @@
 from bitboard import bb
 import numpy as np
 
-height = 3
-width = 3
+HEIGHT = 6
+WIDTH = 6
 
 H = 1
-V = width
+V = WIDTH
 
 class piece:
     def __init__(self, position, length, stride):
