@@ -1,5 +1,5 @@
 from bitboard import bb
-from constants import height, width, H, V
+from constants import HEIGHT, WIDTH, H, V
 
 class piece:
     def __init__(self, position, length, stride):

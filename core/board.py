@@ -1,7 +1,7 @@
 import numpy as np
 from bitboard import bb
 from piece import piece
-from constants import height, width, H, V
+from constants import HEIGHT, WIDTH, H, V
 from solution import move
 
 class board:
@@ -104,6 +104,7 @@ class board:
 
 
 def generate_move(first_board, second_board):
+    
     '''
     Generate a legal move that transforms first_board --> second_board
 
@@ -115,9 +116,9 @@ def generate_move(first_board, second_board):
     '''
     pass
 
-char_board = list("a.bacb.c.")
-b = board(char_board)
-b.print()
-b.move_piece(move('a', 1))
-print('After move "a" by 1 step: ')
-b.print()
+# char_board = list("a.bacb.c.")
+# b = board(char_board)
+# b.print()
+# b.move_piece(move('a', 1))
+# print('After move "a" by 1 step: ')
+# b.print()

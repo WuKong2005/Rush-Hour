@@ -1,5 +1,5 @@
-height = 3
-width = 3
+HEIGHT = 6
+WIDTH = 6
 
 H = 1
-V = width
+V = WIDTH
