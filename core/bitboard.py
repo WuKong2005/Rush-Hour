@@ -1,7 +1,5 @@
 import numpy as np
-
-height = 3
-width = 3
+from constants import height, width
 
 bb = np.uint64
 

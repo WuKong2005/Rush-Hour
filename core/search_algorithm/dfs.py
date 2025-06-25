@@ -12,4 +12,6 @@ def dfs(init_board, count_expanded):
         sol (solution): for backtracking the solution path
         num_expanded (int) --> number of expanded states
     '''
+
+    
     pass

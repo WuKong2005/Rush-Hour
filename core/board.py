@@ -1,17 +1,13 @@
 import numpy as np
-from bitboard import bb, printBitBoard
+from bitboard import bb
 from piece import piece
-
-height = 3
-width = 3
-
-H = 1
-V = 3
+from constants import height, width, H, V
+from solution import move
 
 class board:
     def __init__(self, char_board = None):
         '''
-        Argument:
+        Input:
             char_board: 1D array of characters
         '''
 
@@ -42,7 +38,7 @@ class board:
 
                 if stride == H:
                     self.bb_Horizontal |= new_piece.get_mask()
-                else:
+                elif stride == V:
                     self.bb_Vertical |= new_piece.get_mask()
         
 
@@ -65,17 +61,28 @@ class board:
         if label in self.pieces:
             del self.pieces[label]
 
-    def move_piece(self, label, steps):
-        cur_piece = self.pieces[label]
+    def move_piece(self, move):
+        cur_piece = self.pieces[move.label]
 
         if cur_piece.get_stride() == H:
             self.bb_Horizontal &= ~cur_piece.get_mask()
-            cur_piece.move(steps)
+            cur_piece.move(move.steps)
             self.bb_Horizontal |= cur_piece.get_mask()
         else:
             self.bb_Vertical &= ~cur_piece.get_mask()
-            cur_piece.move(steps)
+            cur_piece.move(move.steps)
             self.bb_Vertical |= cur_piece.get_mask()
+
+    def get_legal_moves(self, previous_move = None):
+        '''
+        INPUT:
+            previous_move (move): None if don't want to ignore previous move, else ignore it from legal moves 
+        OUTPUT: 
+            legal_moves: A list of legal moves that can be applied on current board
+        '''
+        legal_moves = []
+        
+        return legal_moves
 
     def is_goal(self):
         pass
@@ -96,14 +103,21 @@ class board:
         print(new_board)
 
 
+def generate_move(first_board, second_board):
+    '''
+    Generate a legal move that transforms first_board --> second_board
+
+    INPUT:
+        first_board (board): Board before applying movement
+        Second_board (board): Board after applying movement
+    OUTPUT:
+        transfrom_move (move): The move that transforms first_board --> second_board
+    '''
+    pass
+
 char_board = list("a.bacb.c.")
-
 b = board(char_board)
-
 b.print()
-
-b.move_piece('a', 1)
-
+b.move_piece(move('a', 1))
 print('After move "a" by 1 step: ')
-
 b.print()
