@@ -1,9 +1,9 @@
-from Board import Board
+from board import Board
 from search_algorithm.bfs import bfs
 from search_algorithm.dfs import dfs
 from search_algorithm.ucs import ucs
 from search_algorithm.a_star import a_star
-from Solution import Move, Solution
+from solution import Solution
 from search_algorithm.Node import Node
 import copy
 import time
@@ -34,13 +34,21 @@ class Solver:
     def get_measurement(self):
         return self.time, self.num_expanded_state
     
-    def set_init_board(self, new_init_board):
+    def set_init_board(self, new_init_board: Board):
         self.init_board = new_init_board
 
-    def set_algorithm(self, new_algorithm):
+    def set_algorithm(self, new_algorithm: str):
         self.algorithm = new_algorithm
 
-    def solve(self, measure_time = False, count_expanded = False):
+    def solve(self, measure_time: bool = False, count_expanded: bool = False):
+        '''
+        Solve the problem by applying "self.current_algorithm" to find the path to goal state from "self.init_board" state
+
+        Parameters:
+            measure_time: If true, measure and save the time taken to solve.
+            count_expanded: If true, count the number of expanded states.
+        '''
+
         if self.algorithm not in self.algo_map:
             print('Invalid algorithm!')
             return None, None
@@ -57,9 +65,10 @@ class Solver:
 
     def print_solution(self):
         board = copy.deepcopy(self.init_board)
-        list_moves = self.solution.get_solution()
-        for move in list_moves:
-            move.print()
-            board.move_piece(move)
-            board.print()
-            print()
+        if self.solution is not None:
+            list_moves = self.solution.get_solution()
+            for move in list_moves:
+                move.print()
+                board.move_piece(move)
+                board.print()
+                print()

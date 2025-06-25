@@ -1,5 +1,5 @@
-from Solver import Solver
-from Board import Board
+from solver import Solver
+from board import Board
 
 char_board = list("aa.bc.dbc.db....")
 

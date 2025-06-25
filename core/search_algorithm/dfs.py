@@ -1,4 +1,4 @@
-from Solution import Solution, Move
+from solution import Solution
 from .Node import Node
 
 def dfs(node: Node, count_expanded: bool = False):

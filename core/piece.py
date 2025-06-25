@@ -9,7 +9,7 @@ class Piece:
             length (2 or 3): Length size
             stride (1 or 6) --> Horizontal or Vertical
 
-        Return:
+        Returns:
             value: 16-bit
                 bit   0-7: position
                 bit   8-9: length
@@ -33,7 +33,13 @@ class Piece:
     def get_mask(self):
         return bb(self.mask)
 
-    def move(self, steps):
+    def move(self, steps: int):
+        '''
+        Move the piece by number of steps
+
+        Parameters:
+            steps: Number of steps to move
+        '''
         pos = self.get_position()
         stride = self.get_stride()
 

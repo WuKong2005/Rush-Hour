@@ -1,28 +1,28 @@
 import numpy as np
 from bitboard import bb
-from Piece import Piece
+from piece import Piece
 from constants import HEIGHT, WIDTH, H, V, MAIN_LABEL
-from Solution import Move
+from solution import Move
 import copy
 
 class EnumBoard:
-    def __init__(self, mask_horizontal = bb(0), mask_vertical = bb(0)):
+    def __init__(self, mask_horizontal: bb = bb(0), mask_vertical: bb = bb(0)):
         self.mask_horizontal = mask_horizontal
         self.mask_vertical = mask_vertical
 
-    def __eq__(self, other):
+    def __eq__(self, other: "EnumBoard"):
         return isinstance(other, EnumBoard) and self.mask_horizontal == other.mask_horizontal and self.mask_vertical == other.mask_vertical
 
     def __hash__(self):
         return hash((self.mask_horizontal, self.mask_vertical))
 
 class Board:
-    def __init__(self, char_board = None):
+    def __init__(self, char_board: list = None):
         '''
-        Input:
-            char_board: 1D array of characters
+        Initialize a Board from given char_board
+        Parameters:
+            char_board: 1D array (length: HEIGHT * WIDHT) of characters. '.' or 'o' for empty squares, another characters for pieces.
         '''
-
         self.mask_horizontal = bb(0)
         self.mask_vertical = bb(0)
         self.pieces: dict[str, Piece] = {}
@@ -60,7 +60,14 @@ class Board:
     def get_enum(self):
         return EnumBoard(self.mask_horizontal, self.mask_vertical)
 
-    def add_piece(self, label, new_piece):
+    def add_piece(self, label: str, new_piece: Piece):
+        '''
+        Add a new piece to current Board. ignore if this piece exists
+
+        Parameters:
+            label: label of new piece
+            new_piece: Position of new piece
+        '''
         if label in self.pieces:
             print(f'{label} existed')
         else:
@@ -83,14 +90,15 @@ class Board:
 
     #         del self.pieces[label]
 
-    def move_piece(self, move: Move, generate_copy = False):
+    def move_piece(self, move: Move, generate_copy: bool = False):
         '''
         Apply a move on current board
 
-        INPUT:
-            move (Move): Specific the movement
-            copy (bool): True if you want to make a copy, else False
-        OUTPUT:
+        Parameters:
+            move: Specific the movement
+            generate_copy: True if you want to make a copy, else False
+        
+        Returns:
             new_board (Board): A new board after applying move (just return if copy = True)
         '''
 
@@ -115,7 +123,7 @@ class Board:
         '''
         Generate all legal single moves (moves just 1 step)
 
-        OUTPUT: 
+        Returns:
             legal_moves (list of moves): A list of legal moves that can be applied on current board
         '''
         legal_moves = []

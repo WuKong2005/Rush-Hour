@@ -1,4 +1,4 @@
-from Solution import Solution
+from solution import Solution
 from .Node import Node
 
 def ucs(node: Node, count_expanded: bool = False):

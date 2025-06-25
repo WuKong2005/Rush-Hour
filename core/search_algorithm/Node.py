@@ -1,5 +1,5 @@
-from Board import Board
-from Solution import Move
+from board import Board
+from solution import Move
 
 class Node:
     def __init__(self, previous_move: Move = None, current_state: Board = None, parent: "Node" = None):
