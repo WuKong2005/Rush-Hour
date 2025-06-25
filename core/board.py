@@ -24,7 +24,7 @@ class Board:
             char_board = np.array(char_board)
 
             for label in np.unique(char_board):
-                if label == '.':
+                if label == '.' or label == 'o':
                     continue
 
                 positions = np.where(char_board == label)[0]
