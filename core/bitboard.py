@@ -1,7 +1,5 @@
 import numpy as np
-
-HEIGHT = 6
-WIDTH = 6
+from constants import height, width
 
 bb = np.uint64
 

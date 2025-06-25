@@ -1,11 +1,5 @@
 from bitboard import bb
-import numpy as np
-
-HEIGHT = 6
-WIDTH = 6
-
-H = 1
-V = WIDTH
+from constants import height, width, H, V
 
 class piece:
     def __init__(self, position, length, stride):
@@ -33,6 +27,9 @@ class piece:
 
     def get_stride(self):
         return (self.value >> 10) & 0b111
+    
+    def get_attributes(self):
+        return self.value & 0x00FF, (self.value >> 8) & 0b11, (self.value >> 10) & 0b111
     
     def get_mask(self):
         return bb(self.mask)
