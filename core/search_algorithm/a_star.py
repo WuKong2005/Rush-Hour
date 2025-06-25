@@ -1,5 +1,6 @@
-from Board import Board
-from Solver import Solution
+from Board import Board, EnumBoard
+from Solution import Solution
+from .Node import Node
 
 def a_star(init_board, count_expanded):
     '''

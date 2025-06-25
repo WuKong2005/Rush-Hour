@@ -59,12 +59,12 @@ class Board:
             print(f'{label} existed')
         else:
             self.pieces[label] = new_piece
-            stride = new_piece.get_stride()
+            stride = self.pieces[label].get_stride()
             
             if stride == H:
-                self.mask_horizontal |= new_piece.get_mask()
+                self.mask_horizontal |= self.pieces[label].get_mask()
             elif stride == V:
-                self.mask_vertical |= new_piece.get_mask()
+                self.mask_vertical |= self.pieces[label].get_mask()
 
     def remove_piece(self, label):
         if label in self.pieces:
@@ -76,7 +76,7 @@ class Board:
             elif stride == V:
                 self.mask_vertical &= ~self.pieces[label].get_mask()
 
-    def move_piece(self, move, copy = False):
+    def move_piece(self, move: Move, generate_copy = False):
         '''
         Apply a move on current board
 
@@ -87,7 +87,7 @@ class Board:
             new_board (Board): A new board after applying move (just return if copy = True)
         '''
 
-        if not copy:
+        if not generate_copy:
             cur_piece = self.pieces[move.label]
 
             if cur_piece.get_stride() == H:
@@ -98,11 +98,9 @@ class Board:
                 self.mask_vertical &= ~cur_piece.get_mask()
                 cur_piece.move(move.steps)
                 self.mask_vertical |= cur_piece.get_mask()
-
-            return None
         else:
             new_board = copy.deepcopy(self)
-            new_board.move_piece(move, copy = False)
+            new_board.move_piece(move, generate_copy = False)
             return new_board
 
     def get_legal_moves(self, previous_move = None):
@@ -142,7 +140,7 @@ class Board:
         return legal_moves
 
     def is_goal(self):
-        pass
+        return True
 
     def print(self):
         new_board = [' ' for _ in range(HEIGHT * WIDTH)]
@@ -158,16 +156,3 @@ class Board:
             
         new_board = np.array(new_board).reshape((HEIGHT, WIDTH))
         print(new_board)
-
-
-char_board = list("a.bacb.c.")
-b = Board(char_board)
-b.print()
-moves = b.get_legal_moves()
-
-for m in moves:
-    m.print()
-
-# b.move_piece(Move('a', 1))
-# print('After move "a" by 1 step: ')
-# b.print()

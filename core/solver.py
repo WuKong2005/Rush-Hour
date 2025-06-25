@@ -1,6 +1,10 @@
 from Board import Board
-from search_algorithm import bfs, dfs, ucs, a_star
+from search_algorithm.bfs import bfs
+from search_algorithm.dfs import dfs
+from search_algorithm.ucs import ucs
+from search_algorithm.a_star import a_star
 from Solution import Solution
+from search_algorithm.Node import Node
 import time
 
 
@@ -43,7 +47,8 @@ class Solver:
 
         start_time = time.time() if measure_time else 0
 
-        self.solution, self.num_expanded_state = self.algo_map[self.algorithm](self.init_board, count_expanded)
+        self.algo_map[self.algorithm](Node(current_state = self.init_board), count_expanded)
+        # self.solution, self.num_expanded_state = self.algo_map[self.algorithm](self.init_board, count_expanded)
         
         end_time = time.time() if measure_time else 0
         self.time = end_time - start_time
