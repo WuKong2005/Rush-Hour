@@ -5,6 +5,11 @@ from constants import HEIGHT, WIDTH, H, V
 from Solution import Move
 import copy
 
+class EnumBoard:
+    def __init__(self, mask_horizontal = bb(0), mask_vertical = bb(0)):
+        self.mask_horizontal = mask_horizontal
+        self.mask_vertical = mask_vertical
+
 class Board:
     def __init__(self, char_board = None):
         '''
@@ -44,13 +49,10 @@ class Board:
         
 
     def get_mask(self):
-        return self.bb_Horizontal | self.bb_Vertical
+        return self.mask_horizontal | self.mask_vertical
     
-    def get_horizontal_mask(self):
-        return self.mask_horizontal
-    
-    def get_vertical_mask(self):
-        return self.mask_vertical
+    def get_enum(self):
+        return EnumBoard(self.mask_horizontal, self.mask_vertical)
 
     def add_piece(self, label, new_piece):
         if label in self.pieces:
@@ -120,18 +122,18 @@ class Board:
 
             if stride == H:
                 left, right = pos - H, pos + H * length
-                if left >= 0 and left // WIDTH == pos // WIDTH and not (mask >> left) & 1:
+                if left >= 0 and left // WIDTH == pos // WIDTH and not (int(mask) >> left) & 1:
                     legal_moves.append(Move(label, -1))
 
-                if right < HEIGHT * WIDTH and right // WIDTH == pos // WIDTH and not (mask >> right) & 1:
+                if right < HEIGHT * WIDTH and right // WIDTH == pos // WIDTH and not (int(mask) >> right) & 1:
                     legal_moves.append(Move(label, 1))
 
             elif stride == V:
                 top, bottom = pos - V, pos + V * length
-                if top >= 0 and not (mask >> top) & 1:
+                if top >= 0 and not (int(mask) >> top) & 1:
                     legal_moves.append(Move(label, -1))
                 
-                if bottom < HEIGHT * WIDTH and not (mask >> bottom) & 1:
+                if bottom < HEIGHT * WIDTH and not (int(mask) >> bottom) & 1:
                     legal_moves.append(Move(label, 1))
         
         if previous_move is not None:
@@ -161,6 +163,11 @@ class Board:
 char_board = list("a.bacb.c.")
 b = Board(char_board)
 b.print()
-b.move_piece(Move('a', 1))
-print('After move "a" by 1 step: ')
-b.print()
+moves = b.get_legal_moves()
+
+for m in moves:
+    m.print()
+
+# b.move_piece(Move('a', 1))
+# print('After move "a" by 1 step: ')
+# b.print()

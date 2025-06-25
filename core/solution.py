@@ -3,6 +3,9 @@ class Move:
         self.label = label
         self.steps = steps
 
+    def print(self):
+        print(f'{self.label} move {self.steps} steps')
+
 class Solution:
     def __init__(self):
         self.moves = []
