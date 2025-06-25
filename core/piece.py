@@ -1,13 +1,13 @@
 from bitboard import bb
-from constants import height, width, H, V
+from constants import HEIGHT, WIDTH, H, V
 
-class piece:
+class Piece:
     def __init__(self, position, length, stride):
         '''
         Arguments:
-            position: Top-Left position (0 - 35)
-            length: Length size (2 - 3)
-            stride: 0 or 1 --> Horizontal or Vertical
+            position (0 - 35): Top-Left position
+            length (2 or 3): Length size
+            stride (1 or 6) --> Horizontal or Vertical
 
         Return:
             value: 16-bit

@@ -1,9 +1,9 @@
-class move:
+class Move:
     def __init__(self, label, steps):
         self.label = label
         self.steps = steps
 
-class solution:
+class Solution:
     def __init__(self):
         self.moves = []
 

@@ -1,10 +1,10 @@
-from board import board
+from Board import Board
 from search_algorithm import bfs, dfs, ucs, a_star
-from solution import solution
+from Solution import Solution
 import time
 
 
-class solver:
+class Solver:
     algo_map = {
         'bfs'   : bfs,
         'dfs'   : dfs,
@@ -16,7 +16,7 @@ class solver:
         self.init_board = init_board
         self.algorithm = algorithm
 
-        self.solution = solution()
+        self.solution = Solution()
         self.num_expanded_state = 0
         self.time = 0
         

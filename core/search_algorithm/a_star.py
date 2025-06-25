@@ -1,5 +1,5 @@
-from board import board
-from solver import solution
+from Board import Board
+from Solver import Solution
 
 def a_star(init_board, count_expanded):
     '''
