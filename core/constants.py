@@ -3,3 +3,5 @@ WIDTH = 4
 
 H = 1
 V = WIDTH
+
+MAIN_LABEL = 'a'

@@ -1,7 +1,7 @@
 import numpy as np
 from bitboard import bb
 from Piece import Piece
-from constants import HEIGHT, WIDTH, H, V
+from constants import HEIGHT, WIDTH, H, V, MAIN_LABEL
 from Solution import Move
 import copy
 
@@ -9,6 +9,12 @@ class EnumBoard:
     def __init__(self, mask_horizontal = bb(0), mask_vertical = bb(0)):
         self.mask_horizontal = mask_horizontal
         self.mask_vertical = mask_vertical
+
+    def __eq__(self, other):
+        return isinstance(other, EnumBoard) and self.mask_horizontal == other.mask_horizontal and self.mask_vertical == other.mask_vertical
+
+    def __hash__(self):
+        return hash((self.mask_horizontal, self.mask_vertical))
 
 class Board:
     def __init__(self, char_board = None):
@@ -68,13 +74,14 @@ class Board:
 
     def remove_piece(self, label):
         if label in self.pieces:
-            del self.pieces[label]
             stride = self.pieces[label].get_stride()
     
             if stride == H:
                 self.mask_horizontal &= ~self.pieces[label].get_mask()
             elif stride == V:
                 self.mask_vertical &= ~self.pieces[label].get_mask()
+
+            del self.pieces[label]
 
     def move_piece(self, move: Move, generate_copy = False):
         '''
@@ -100,15 +107,16 @@ class Board:
                 self.mask_vertical |= cur_piece.get_mask()
         else:
             new_board = copy.deepcopy(self)
-            new_board.move_piece(move, generate_copy = False)
+            new_board.move_piece(move, generate_copy=False)
             return new_board
 
-    def get_legal_moves(self, previous_move = None):
+
+    def get_legal_moves(self, previous_move: Move = None):
         '''
         Generate all legal single moves (moves just 1 step)
 
         INPUT:
-            previous_move (move): None if don't want to ignore previous move, else ignore it from legal moves 
+            previous_move (move): None if don't want to ignore previous move, else ignore it's undo_step from legal moves 
         OUTPUT: 
             legal_moves (list of moves): A list of legal moves that can be applied on current board
         '''
@@ -134,13 +142,17 @@ class Board:
                 if bottom < HEIGHT * WIDTH and not (int(mask) >> bottom) & 1:
                     legal_moves.append(Move(label, 1))
         
-        if previous_move is not None:
-            legal_moves.remove(previous_move)
+        
+        if previous_move is not None and previous_move.undo_move() in legal_moves:
+            legal_moves.remove(previous_move.undo_move())
 
         return legal_moves
 
     def is_goal(self):
-        return True
+        if MAIN_LABEL in self.pieces:
+            if self.pieces[MAIN_LABEL].get_mask() == 0xC:
+                return True
+        return False
 
     def print(self):
         new_board = [' ' for _ in range(HEIGHT * WIDTH)]

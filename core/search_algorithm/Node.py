@@ -17,7 +17,8 @@ class Node:
         legal_moves = self.current_state.get_legal_moves(self.previous_move)
 
         for move in legal_moves:
-            successors.append(Node(move, self.current_state.move_piece(move, True)))
+            new_board = self.current_state.move_piece(move, True)
+            successors.append(Node(move, new_board))
         
         return successors
     
@@ -28,6 +29,9 @@ class Node:
             return parent
         
         return None
+    
+    def get_enum(self):
+        return self.current_state.get_enum()
     
     def is_goal(self):
         return self.current_state.is_goal()

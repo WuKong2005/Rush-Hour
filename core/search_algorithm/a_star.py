@@ -1,16 +1,15 @@
-from Board import Board, EnumBoard
 from Solution import Solution
 from .Node import Node
 
-def a_star(init_board, count_expanded):
+def a_star(node: Node, count_expanded: bool = False):
     '''
     Apply A* algorithm:
 
     Input:
-        init_board (board): Initial state
+        node (Node): Initial state
         count_expanded (bool): Count number of expanded states or not
     Output:
-        sol (solution): for backtracking the solution path
+        sol (Solution): for backtracking the solution path
         num_expanded (int) --> number of expanded states
     '''
     pass

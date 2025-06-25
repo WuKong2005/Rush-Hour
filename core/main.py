@@ -1,11 +1,13 @@
 from Solver import Solver
 from Board import Board
-from Solution import Move
 
 char_board = list("aa.bc.dbc.db....")
 
 board = Board(char_board)
+board.print()
 
 sol = Solver(Board(char_board), 'dfs')
 
-sol.solve()
+sol.solve(count_expanded=True)
+
+sol.print_solution()
