@@ -1,29 +1,28 @@
-from Solution import Solution
+from Solution import Solution, Move
 from .Node import Node
 
 def dfs(node: Node, count_expanded: bool = False):
     '''
-    Apply DFS algorithm:
+    Apply Depth-First Search (DFS) algorithm.
 
-    Input:
-        node (Node): Initial state
-        count_expanded (bool): Count number of expanded states or not
-    Output:
-        sol (Solution): for backtracking the solution path
-        num_expanded (int) --> number of expanded states
+    Parameters:
+        node (Node): The initial state of the search.
+        count_expanded (bool): If True, count the number of expanded states.
+
+    Returns:
+        solution (Solution): Object for backtracking the solution path.
+        num_expanded (int): Number of expanded states (if count_expanded is True).
     '''
     num_expanded = [0]
-
     # Set of EnumBoard
     visited = set()
     visited.add(node.get_enum())
-
     solution = Solution()
 
+    if node.is_goal():
+        return solution, num_expanded[0]
+
     def dfs_recursive(current: Node):
-        if current.is_goal():
-            return True
-        
         successors = current.generate_successors()
         if count_expanded:
             num_expanded[0] += 1
@@ -31,17 +30,19 @@ def dfs(node: Node, count_expanded: bool = False):
         for child in successors:
             if child.get_enum() in visited:
                 continue
-            visited.add(child.get_enum())
-
-            if dfs_recursive(child):
+            if child.is_goal():
                 solution.add_move(child.get_previous_move())
                 return True
 
+            visited.add(child.get_enum())
+            if dfs_recursive(child):
+                solution.add_move(child.get_previous_move())
+                return True
             visited.remove(child.get_enum())
 
         return False
     
-
-    dfs_recursive(node)
-
-    return solution, num_expanded
+    if dfs_recursive(node):
+        return solution, num_expanded[0]
+    else:
+        return None, num_expanded[0]

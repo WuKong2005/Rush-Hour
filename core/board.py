@@ -72,16 +72,16 @@ class Board:
             elif stride == V:
                 self.mask_vertical |= self.pieces[label].get_mask()
 
-    def remove_piece(self, label):
-        if label in self.pieces:
-            stride = self.pieces[label].get_stride()
+    # def remove_piece(self, label):
+    #     if label in self.pieces:
+    #         stride = self.pieces[label].get_stride()
     
-            if stride == H:
-                self.mask_horizontal &= ~self.pieces[label].get_mask()
-            elif stride == V:
-                self.mask_vertical &= ~self.pieces[label].get_mask()
+    #         if stride == H:
+    #             self.mask_horizontal &= ~self.pieces[label].get_mask()
+    #         elif stride == V:
+    #             self.mask_vertical &= ~self.pieces[label].get_mask()
 
-            del self.pieces[label]
+    #         del self.pieces[label]
 
     def move_piece(self, move: Move, generate_copy = False):
         '''
@@ -111,12 +111,10 @@ class Board:
             return new_board
 
 
-    def get_legal_moves(self, previous_move: Move = None):
+    def get_legal_moves(self):
         '''
         Generate all legal single moves (moves just 1 step)
 
-        INPUT:
-            previous_move (move): None if don't want to ignore previous move, else ignore it's undo_step from legal moves 
         OUTPUT: 
             legal_moves (list of moves): A list of legal moves that can be applied on current board
         '''
@@ -141,10 +139,6 @@ class Board:
                 
                 if bottom < HEIGHT * WIDTH and not (int(mask) >> bottom) & 1:
                     legal_moves.append(Move(label, 1))
-        
-        
-        if previous_move is not None and previous_move.undo_move() in legal_moves:
-            legal_moves.remove(previous_move.undo_move())
 
         return legal_moves
 

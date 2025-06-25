@@ -3,13 +3,14 @@ from .Node import Node
 
 def bfs(node: Node, count_expanded: bool = False):
     '''
-    Apply BFS algorithm:
+    Apply Breadth-First Search (BFS) algorithm.
 
-    Input:
-        node (Node): Initial state
-        count_expanded (bool): Count number of expanded states or not
-    Output:
-        sol (Solution): for backtracking the solution path
-        num_expanded (int) --> number of expanded states
+    Parameters:
+        node (Node): The initial state of the search.
+        count_expanded (bool): If True, count the number of expanded states.
+
+    Returns:
+        solution (Solution): Object for backtracking the solution path.
+        num_expanded (int): Number of expanded states (if count_expanded is True).
     '''
     pass

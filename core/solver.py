@@ -52,6 +52,9 @@ class Solver:
         end_time = time.time() if measure_time else 0
         self.time = end_time - start_time
 
+    def is_solvable(self):
+        return self.solution is not None
+
     def print_solution(self):
         board = copy.deepcopy(self.init_board)
         list_moves = self.solution.get_solution()
