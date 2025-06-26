@@ -1,12 +1,12 @@
 from solver import Solver
 from board import Board
 
-char_board = list("aa.bc.dbc.db....")
+char_board = list("BBBoooooCoooAACoooooDoooooDoooooDooo")
 
 board = Board(char_board)
 board.print()
 
-sol = Solver(Board(char_board), 'dfs')
+sol = Solver(Board(char_board), 'a_star')
 
 sol.solve(count_expanded=True)
 

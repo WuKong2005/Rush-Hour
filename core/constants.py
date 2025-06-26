@@ -1,7 +1,7 @@
-HEIGHT = 4
-WIDTH = 4
+HEIGHT = 6
+WIDTH = 6
 
 H = 1
 V = WIDTH
 
-MAIN_LABEL = 'a'
+MAIN_LABEL = 'A'

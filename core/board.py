@@ -1,6 +1,6 @@
 import numpy as np
 from bitboard import bb
-from piece import Piece
+from vehicle import Vehicle
 from constants import HEIGHT, WIDTH, H, V, MAIN_LABEL
 from solution import Move
 import copy
@@ -21,11 +21,11 @@ class Board:
         '''
         Initialize a Board from given char_board
         Parameters:
-            char_board: 1D array (length: HEIGHT * WIDHT) of characters. '.' or 'o' for empty squares, another characters for pieces.
+            char_board: 1D array (length: HEIGHT * WIDHT) of characters. '.' or 'o' for empty squares, another characters for vehicles.
         '''
         self.mask_horizontal = bb(0)
         self.mask_vertical = bb(0)
-        self.pieces: dict[str, Piece] = {}
+        self.vehicles: dict[str, Vehicle] = {}
 
         if char_board is not None:
             if len(char_board) != HEIGHT * WIDTH:
@@ -44,53 +44,59 @@ class Board:
                 length = len(positions)
                 stride = positions[1] - positions[0]
 
-                new_piece = Piece(pos, length, stride)
+                new_Vehicle = Vehicle(pos, length, stride)
 
-                self.pieces[label] = new_piece
+                self.vehicles[label] = new_Vehicle
 
                 if stride == H:
-                    self.mask_horizontal |= new_piece.get_mask()
+                    self.mask_horizontal |= new_Vehicle.get_mask()
                 elif stride == V:
-                    self.mask_vertical |= new_piece.get_mask()
+                    self.mask_vertical |= new_Vehicle.get_mask()
         
 
     def get_mask(self):
         return self.mask_horizontal | self.mask_vertical
     
+    def get_horizontal_mask(self):
+        return self.mask_horizontal
+    
+    def get_vertical_mask(self):
+        return self.mask_vertical
+    
     def get_enum(self):
         return EnumBoard(self.mask_horizontal, self.mask_vertical)
 
-    def add_piece(self, label: str, new_piece: Piece):
-        '''
-        Add a new piece to current Board. ignore if this piece exists
+    # def add_vehicle(self, label: str, new_Vehicle: Vehicle):
+    #     '''
+    #     Add a new Vehicle to current Board. ignore if this Vehicle exists
 
-        Parameters:
-            label: label of new piece
-            new_piece: Position of new piece
-        '''
-        if label in self.pieces:
-            print(f'{label} existed')
-        else:
-            self.pieces[label] = new_piece
-            stride = self.pieces[label].get_stride()
+    #     Parameters:
+    #         label: label of new Vehicle
+    #         new_Vehicle: Position of new Vehicle
+    #     '''
+    #     if label in self.vehicles:
+    #         print(f'{label} existed')
+    #     else:
+    #         self.vehicles[label] = new_Vehicle
+    #         stride = self.vehicles[label].get_stride()
             
-            if stride == H:
-                self.mask_horizontal |= self.pieces[label].get_mask()
-            elif stride == V:
-                self.mask_vertical |= self.pieces[label].get_mask()
+    #         if stride == H:
+    #             self.mask_horizontal |= self.vehicles[label].get_mask()
+    #         elif stride == V:
+    #             self.mask_vertical |= self.vehicles[label].get_mask()
 
-    # def remove_piece(self, label):
-    #     if label in self.pieces:
-    #         stride = self.pieces[label].get_stride()
+    # def remove_Vehicle(self, label):
+    #     if label in self.vehicles:
+    #         stride = self.vehicles[label].get_stride()
     
     #         if stride == H:
-    #             self.mask_horizontal &= ~self.pieces[label].get_mask()
+    #             self.mask_horizontal &= ~self.vehicles[label].get_mask()
     #         elif stride == V:
-    #             self.mask_vertical &= ~self.pieces[label].get_mask()
+    #             self.mask_vertical &= ~self.vehicles[label].get_mask()
 
-    #         del self.pieces[label]
+    #         del self.vehicles[label]
 
-    def move_piece(self, move: Move, generate_copy: bool = False):
+    def move_vehicle(self, move: Move, generate_copy: bool = False):
         '''
         Apply a move on current board
 
@@ -103,21 +109,23 @@ class Board:
         '''
 
         if not generate_copy:
-            cur_piece = self.pieces[move.label]
+            cur_Vehicle = self.vehicles[move.label]
 
-            if cur_piece.get_stride() == H:
-                self.mask_horizontal &= ~cur_piece.get_mask()
-                cur_piece.move(move.steps)
-                self.mask_horizontal |= cur_piece.get_mask()
+            if cur_Vehicle.get_stride() == H:
+                self.mask_horizontal &= ~cur_Vehicle.get_mask()
+                cur_Vehicle.move(move.steps)
+                self.mask_horizontal |= cur_Vehicle.get_mask()
             else:
-                self.mask_vertical &= ~cur_piece.get_mask()
-                cur_piece.move(move.steps)
-                self.mask_vertical |= cur_piece.get_mask()
+                self.mask_vertical &= ~cur_Vehicle.get_mask()
+                cur_Vehicle.move(move.steps)
+                self.mask_vertical |= cur_Vehicle.get_mask()
         else:
             new_board = copy.deepcopy(self)
-            new_board.move_piece(move, generate_copy=False)
+            new_board.move_vehicle(move, generate_copy=False)
             return new_board
 
+    def get_cost_move(self, move: Move):
+        return move.steps * self.vehicles[move.label].get_length()
 
     def get_legal_moves(self):
         '''
@@ -129,8 +137,8 @@ class Board:
         legal_moves = []
         mask = self.mask_horizontal | self.mask_vertical
 
-        for label in self.pieces:
-            pos, length, stride = self.pieces[label].get_attributes()            
+        for label in self.vehicles:
+            pos, length, stride = self.vehicles[label].get_attributes()            
 
             if stride == H:
                 left, right = pos - H, pos + H * length
@@ -151,18 +159,18 @@ class Board:
         return legal_moves
 
     def is_goal(self):
-        if MAIN_LABEL in self.pieces:
-            if self.pieces[MAIN_LABEL].get_mask() == 0xC:
-                return True
+        if MAIN_LABEL in self.vehicles:
+            pos, length, _ = self.vehicles[MAIN_LABEL].get_attributes()
+            return pos + length == WIDTH * (pos // WIDTH + 1)
         return False
 
     def print(self):
         new_board = [' ' for _ in range(HEIGHT * WIDTH)]
 
-        for label in self.pieces:
-            pos = self.pieces[label].get_position()
-            length = self.pieces[label].get_length()
-            stride = self.pieces[label].get_stride()
+        for label in self.vehicles:
+            pos = self.vehicles[label].get_position()
+            length = self.vehicles[label].get_length()
+            stride = self.vehicles[label].get_stride()
 
             for _ in range(length):
                 new_board[pos] = label
@@ -170,3 +178,15 @@ class Board:
             
         new_board = np.array(new_board).reshape((HEIGHT, WIDTH))
         print(new_board)
+
+
+    def heuristic(self):
+        pos, length, _ = self.vehicles[MAIN_LABEL].get_attributes()
+
+        count = WIDTH * (pos // WIDTH + 1) - (pos + length) + 1
+        i = pos + length
+        while i // WIDTH == pos // WIDTH:
+            count += (int(self.mask_vertical) >> i) & 1
+            i += 1
+
+        return count

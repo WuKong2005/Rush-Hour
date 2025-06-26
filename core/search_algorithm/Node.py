@@ -2,35 +2,68 @@ from board import Board
 from solution import Move
 
 class Node:
-    def __init__(self, previous_move: Move = None, current_state: Board = None, parent: "Node" = None):
+    def __init__(self, previous_move: Move = None, current_board: Board = None, parent: "Node" = None):
         self.previous_move = previous_move
-        self.current_state = current_state
+        self.current_board = current_board
         self.parent = parent
 
     def get_previous_move(self):
         return self.previous_move
     
-    def get_current_state(self):
-        return self.current_state
+    def get_current_board(self):
+        return self.current_board
     
     def get_parent(self):
         return self.parent
     
+    def get_enum(self):
+        return self.current_board.get_enum()
+    
+    def get_cost_move(self, move: Move):
+        return self.current_board.get_cost_move(move)
+    
     def generate_successors(self):
         successors = []
-        legal_moves = self.current_state.get_legal_moves()
+        legal_moves = self.current_board.get_legal_moves()
 
         for move in legal_moves:
-            new_board = self.current_state.move_piece(move, True)
+            new_board = self.current_board.move_vehicle(move, True)
             successors.append(Node(move, new_board, self))
         
         return successors
     
-    def get_enum(self):
-        return self.current_state.get_enum()
-    
     def is_goal(self):
-        return self.current_state.is_goal()
+        return self.current_board.is_goal()
     
     def print(self):
-        self.current_state.print()
+        self.current_board.print()
+
+    def heuristic(self):
+        return self.current_board.heuristic()
+    
+
+class A_star_node (Node):
+    def __init__(self, g_cost: int, node: Node):
+        super().__init__(node.previous_move, node.current_board, node.parent)
+        self.g_cost = g_cost
+        self.f_cost = self.g_cost + self.heuristic()
+
+    def __lt__(self, other: "A_star_node"):
+        return self.f_cost < other.f_cost
+    
+    def __eq__(self, other: "A_star_node"):
+        return self.f_cost == other.f_cost
+    
+    def get_f_cost(self):
+        return self.f_cost
+
+    def generate_successors(self):
+        successors = []
+        legal_moves = self.current_board.get_legal_moves()
+
+        for move in legal_moves:
+            new_board = self.current_board.move_vehicle(move, True)
+            cost = self.get_cost_move(move)
+            successors.append(A_star_node(self.g_cost + cost, Node(move, new_board, self)))
+        
+        return successors

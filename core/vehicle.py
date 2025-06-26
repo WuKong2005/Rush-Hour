@@ -1,7 +1,7 @@
 from bitboard import bb
 from constants import HEIGHT, WIDTH, H, V
 
-class Piece:
+class Vehicle:
     def __init__(self, position, length, stride):
         '''
         Arguments:
@@ -35,7 +35,7 @@ class Piece:
 
     def move(self, steps: int):
         '''
-        Move the piece by number of steps
+        Move the Vehicle by number of steps
 
         Parameters:
             steps: Number of steps to move

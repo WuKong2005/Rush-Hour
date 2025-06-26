@@ -55,7 +55,7 @@ class Solver:
 
         start_time = time.time() if measure_time else 0
 
-        self.solution, self.num_expanded_state = self.algo_map[self.algorithm](Node(current_state = self.init_board), count_expanded)
+        self.solution, self.num_expanded_state = self.algo_map[self.algorithm](Node(current_board=self.init_board), count_expanded)
         
         end_time = time.time() if measure_time else 0
         self.time = end_time - start_time
@@ -69,6 +69,6 @@ class Solver:
             list_moves = self.solution.get_solution()
             for move in list_moves:
                 move.print()
-                board.move_piece(move)
+                board.move_vehicle(move)
                 board.print()
                 print()
