@@ -63,7 +63,7 @@ class Board:
     def get_vertical_mask(self):
         return self.mask_vertical
     
-    def get_enum(self):
+    def board_to_enum(self):
         return EnumBoard(self.mask_horizontal, self.mask_vertical)
 
     # def add_vehicle(self, label: str, new_Vehicle: Vehicle):
@@ -181,12 +181,18 @@ class Board:
 
 
     def heuristic(self):
+        '''
+        Calculate the heuristic value of current state 
+        
+        Returns:
+            heuristic_value: (number of vertical blocking Vehicles) + (distance of MAIN Vehicle to GOAL)
+        '''
         pos, length, _ = self.vehicles[MAIN_LABEL].get_attributes()
 
-        count = WIDTH * (pos // WIDTH + 1) - (pos + length)
+        count = (WIDTH * (pos // WIDTH + 1) - (pos + length)) * length
         i = pos + length
         while i // WIDTH == pos // WIDTH:
-            count += (int(self.mask_vertical) >> i) & 1
+            count += ((int(self.mask_vertical) >> i) & 1) << 1
             i += 1
 
         return count

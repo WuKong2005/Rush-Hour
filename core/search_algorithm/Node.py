@@ -17,12 +17,12 @@ class Node:
         return self.parent
     
     def get_enum(self):
-        return self.current_board.get_enum()
+        return self.current_board.board_to_enum()
     
     def get_cost_move(self, move: Move):
         return self.current_board.get_cost_move(move)
     
-    def generate_successors(self):
+    def generate_successors(self) -> list["Node"]:
         successors = []
         legal_moves = self.current_board.get_legal_moves()
 
@@ -57,7 +57,7 @@ class A_star_node (Node):
     def get_f_cost(self):
         return self.f_cost
 
-    def generate_successors(self):
+    def generate_successors(self) -> list["A_star_node"]:
         successors = []
         legal_moves = self.current_board.get_legal_moves()
 

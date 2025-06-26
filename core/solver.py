@@ -1,6 +1,6 @@
 from board import Board
 from search_algorithm.bfs import bfs
-from search_algorithm.dfs import dfs
+from search_algorithm.dfs import dfs, iddfs
 from search_algorithm.ucs import ucs
 from search_algorithm.a_star import a_star
 from solution import Solution
@@ -13,6 +13,7 @@ class Solver:
     algo_map = {
         'bfs'   : bfs,
         'dfs'   : dfs,
+        'iddfs' : iddfs,
         'ucs'   : ucs,
         'a_star': a_star
     }
@@ -79,3 +80,4 @@ class Solver:
                 print(f'g_cost = {g_cost}')
                 print(f'h_cost = {board.heuristic()}')
                 print()
+            print(f'Number of steps: {len(list_moves)}')

@@ -14,11 +14,11 @@ def bfs(node: Node, count_expanded: bool = False):
         solution (Solution): Object for backtracking the solution path.
         num_expanded (int): Number of expanded states (if count_expanded is True).
     '''
-    num_expanded = [0]
+    num_expanded = 0
 
     reached = set()
     reached.add(node.get_enum())
-
+    
     frontier = deque()
     frontier.append(node)
 
@@ -31,7 +31,7 @@ def bfs(node: Node, count_expanded: bool = False):
         current = frontier.popleft()
 
         if count_expanded:
-            num_expanded[0] += 1
+            num_expanded += 1
 
         successors = current.generate_successors()
         for child in successors:
@@ -43,9 +43,9 @@ def bfs(node: Node, count_expanded: bool = False):
                     solution.add_move(child.get_previous_move())
                     child = child.get_parent()
 
-                return solution, num_expanded[0]
+                return solution, num_expanded
             
             reached.add(child.get_enum())
             frontier.append(child)
 
-    return solution, num_expanded[0]
+    return None, num_expanded

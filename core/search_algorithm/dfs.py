@@ -1,5 +1,6 @@
 from solution import Solution
 from .Node import Node
+from constants import max_depth
 
 def dfs(node: Node, count_expanded: bool = False):
     '''
@@ -43,6 +44,53 @@ def dfs(node: Node, count_expanded: bool = False):
         return False
     
     if dfs_recursive(node):
+        return solution, num_expanded[0]
+    else:
+        return None, num_expanded[0]
+
+def iddfs(node: Node, count_expanded: bool = False):
+    num_expanded = [0]
+    solution = Solution()
+
+    def depth_limited_search(node: Node, limit: int):
+        visited = set()
+        visited.add(node.get_enum())
+
+        def dfs(node: Node, depth: int):
+            if depth > limit:
+                return False
+            successors = node.generate_successors()
+            if count_expanded:
+                num_expanded[0] += 1
+
+            for child in successors:
+                if child.get_enum() in visited:
+                    continue
+                if child.is_goal(): 
+                    return True
+                
+                visited.add(child.get_enum())
+
+                if dfs(child, depth + 1):
+                    solution.add_move(child.get_previous_move())
+                    return True
+
+                visited.remove(child.get_enum())
+            
+            return False
+        
+        return dfs(node, 0)
+    
+    d = 0
+    flag = False
+
+    while not flag:
+        flag |= depth_limited_search(node, d)
+        d += 1
+        if d > max_depth:
+            break
+
+    if flag:
         return solution, num_expanded[0]
     else:
         return None, num_expanded[0]
