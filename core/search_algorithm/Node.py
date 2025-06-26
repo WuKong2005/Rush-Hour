@@ -7,6 +7,9 @@ class Node:
         self.current_board = current_board
         self.parent = parent
 
+    def __eq__(self, other: "Node"):
+        return True
+
     def get_previous_move(self):
         return self.previous_move
     

@@ -1,5 +1,6 @@
 from solution import Solution
 from .Node import Node
+import heapq
 
 def ucs(node: Node, count_expanded: bool = False):
     '''
@@ -13,4 +14,32 @@ def ucs(node: Node, count_expanded: bool = False):
         solution (Solution): Object for backtracking the solution path.
         num_expanded (int): Number of expanded states (if count_expanded is True).
     '''
-    pass
+    reached = {}
+    frontier = []
+    solution = Solution()
+    num_expanded = 0
+
+    reached[node.get_enum()] = 0
+    heapq.heappush(frontier, (0, node))
+
+    while frontier:
+        (cost, current) = heapq.heappop(frontier)
+        if count_expanded:
+            num_expanded += 1
+        
+        if current.is_goal():
+            cur_node = current
+            while cur_node.get_parent() is not None:
+                solution.add_move(cur_node.get_previous_move())
+                cur_node = cur_node.get_parent()
+            
+            return solution, num_expanded
+        
+        successors = current.generate_successors()
+        for child in successors:
+            path_cost = cost + current.get_cost_move(child.get_previous_move())
+            if child.get_enum() not in reached or path_cost < reached[child.get_enum()]:
+                reached[child.get_enum()] =path_cost
+                heapq.heappush(frontier, (path_cost, child))
+
+    return None, num_expanded
