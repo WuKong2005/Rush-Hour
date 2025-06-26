@@ -125,7 +125,7 @@ class Board:
             return new_board
 
     def get_cost_move(self, move: Move):
-        return move.steps * self.vehicles[move.label].get_length()
+        return abs(move.steps) * self.vehicles[move.label].get_length()
 
     def get_legal_moves(self):
         '''
@@ -183,7 +183,7 @@ class Board:
     def heuristic(self):
         pos, length, _ = self.vehicles[MAIN_LABEL].get_attributes()
 
-        count = WIDTH * (pos // WIDTH + 1) - (pos + length) + 1
+        count = WIDTH * (pos // WIDTH + 1) - (pos + length)
         i = pos + length
         while i // WIDTH == pos // WIDTH:
             count += (int(self.mask_vertical) >> i) & 1

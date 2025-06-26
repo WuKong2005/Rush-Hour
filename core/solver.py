@@ -65,10 +65,17 @@ class Solver:
 
     def print_solution(self):
         board = copy.deepcopy(self.init_board)
+        g_cost = 0
+        print(f'g_cost = {g_cost}')
+        print(f'h_cost = {board.heuristic()}')
+        print()
         if self.solution is not None:
             list_moves = self.solution.get_solution()
             for move in list_moves:
                 move.print()
+                g_cost += board.get_cost_move(move)
                 board.move_vehicle(move)
                 board.print()
+                print(f'g_cost = {g_cost}')
+                print(f'h_cost = {board.heuristic()}')
                 print()
