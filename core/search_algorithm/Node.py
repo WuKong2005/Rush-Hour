@@ -9,6 +9,10 @@ class Node:
 
     def __eq__(self, other: "Node"):
         return True
+        # return self.heuristic() == other.heuristic()
+    
+    # def __lt__(self, other: "Node"):
+    #     return self.heuristic() < other.heuristic()
 
     def get_previous_move(self):
         return self.previous_move

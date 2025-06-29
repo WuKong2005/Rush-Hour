@@ -1,21 +1,23 @@
 from board import Board
 from search_algorithm.bfs import bfs
-from search_algorithm.dfs import dfs, iddfs
+from search_algorithm.dfs import dfs
+from search_algorithm.backtracking import backtracking
 from search_algorithm.ucs import ucs
 from search_algorithm.a_star import a_star
 from solution import Solution
 from search_algorithm.Node import Node
 import copy
 import time
+import tracemalloc
 
 
 class Solver:
     algo_map = {
-        'bfs'   : bfs,
-        'dfs'   : dfs,
-        'iddfs' : iddfs,
-        'ucs'   : ucs,
-        'a_star': a_star
+        'bfs'           : bfs,
+        'dfs'           : dfs,
+        'backtracking'  : backtracking,
+        'ucs'           : ucs,
+        'a_star'        : a_star
     }
 
     def __init__(self, init_board: Board = None, algorithm: str = None):
@@ -24,6 +26,7 @@ class Solver:
 
         self.solution = Solution()
         self.num_expanded_state = 0
+        self.memory = 0
         self.time = 0
         
     def get_init_board(self):
@@ -33,7 +36,10 @@ class Solver:
         return self.algorithm
     
     def get_measurement(self):
-        return self.time, self.num_expanded_state
+        return self.time, self.memory, self.num_expanded_state
+    
+    def get_solution_steps(self):
+        return self.solution.num_moves()
     
     def set_init_board(self, new_init_board: Board):
         self.init_board = new_init_board
@@ -41,7 +47,7 @@ class Solver:
     def set_algorithm(self, new_algorithm: str):
         self.algorithm = new_algorithm
 
-    def solve(self, measure_time: bool = False, count_expanded: bool = False):
+    def solve(self):
         '''
         Solve the problem by applying "self.current_algorithm" to find the path to goal state from "self.init_board" state
 
@@ -54,12 +60,17 @@ class Solver:
             print('Invalid algorithm!')
             return None, None
 
-        start_time = time.time() if measure_time else 0
+        start_time = time.time()
+        tracemalloc.start()
 
-        self.solution, self.num_expanded_state = self.algo_map[self.algorithm](Node(current_board=self.init_board), count_expanded)
+        self.solution, self.num_expanded_state = self.algo_map[self.algorithm](Node(current_board=self.init_board))
         
-        end_time = time.time() if measure_time else 0
+        _, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+        end_time = time.time()
+
         self.time = end_time - start_time
+        self.memory = peak / 1024
 
     def is_solvable(self):
         return self.solution is not None
@@ -67,9 +78,17 @@ class Solver:
     def print_solution(self):
         board = copy.deepcopy(self.init_board)
         g_cost = 0
+
+        print(f'''
+{self.algorithm} algorithm
+-----------------
+        ''')
+
+        board.print()
         print(f'g_cost = {g_cost}')
         print(f'h_cost = {board.heuristic()}')
         print()
+
         if self.solution is not None:
             list_moves = self.solution.get_solution()
             for move in list_moves:
@@ -80,4 +99,6 @@ class Solver:
                 print(f'g_cost = {g_cost}')
                 print(f'h_cost = {board.heuristic()}')
                 print()
-            print(f'Number of steps: {len(list_moves)}')
+
+        else:
+            print('No solution found!')

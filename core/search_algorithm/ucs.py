@@ -2,13 +2,12 @@ from solution import Solution
 from .Node import Node
 import heapq
 
-def ucs(node: Node, count_expanded: bool = False):
+def ucs(node: Node):
     '''
     Apply Uniform-Cost Search (UCS) algorithm.
 
     Parameters:
         node (Node): The initial state of the search.
-        count_expanded (bool): If True, count the number of expanded states.
 
     Returns:
         solution (Solution): Object for backtracking the solution path.
@@ -24,8 +23,7 @@ def ucs(node: Node, count_expanded: bool = False):
 
     while frontier:
         (cost, current) = heapq.heappop(frontier)
-        if count_expanded:
-            num_expanded += 1
+        num_expanded += 1
         
         if current.is_goal():
             cur_node = current
@@ -39,7 +37,7 @@ def ucs(node: Node, count_expanded: bool = False):
         for child in successors:
             path_cost = cost + current.get_cost_move(child.get_previous_move())
             if child.get_enum() not in reached or path_cost < reached[child.get_enum()]:
-                reached[child.get_enum()] =path_cost
+                reached[child.get_enum()] = path_cost
                 heapq.heappush(frontier, (path_cost, child))
 
     return None, num_expanded

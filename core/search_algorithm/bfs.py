@@ -2,13 +2,12 @@ from solution import Solution
 from .Node import Node
 from collections import deque
 
-def bfs(node: Node, count_expanded: bool = False):
+def bfs(node: Node):
     '''
     Apply Breadth-First Search (BFS) algorithm.
 
     Parameters:
         node (Node): The initial state of the search.
-        count_expanded (bool): If True, count the number of expanded states.
 
     Returns:
         solution (Solution): Object for backtracking the solution path.
@@ -29,9 +28,7 @@ def bfs(node: Node, count_expanded: bool = False):
     
     while frontier:
         current = frontier.popleft()
-
-        if count_expanded:
-            num_expanded += 1
+        num_expanded += 1
 
         successors = current.generate_successors()
         for child in successors:

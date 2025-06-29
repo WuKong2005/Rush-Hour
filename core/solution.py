@@ -6,6 +6,9 @@ class Move:
     def __eq__(self, other):
         return isinstance(other, Move) and self.label == other.label and self.steps == other.steps
     
+    def undo(self):
+        return Move(self.label, -self.steps)
+
     def print(self):
         print(f'{self.label} move {self.steps} steps')
 

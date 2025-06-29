@@ -2,13 +2,12 @@ from solution import Solution
 from .Node import A_star_node, Node
 import heapq
 
-def a_star(node: Node, count_expanded: bool = False):
+def a_star(node: Node):
     '''
     Apply A* algorithm.
 
     Parameters:
         node (Node): The initial state of the search.
-        count_expanded (bool): If True, count the number of expanded states.
 
     Returns:
         solution (Solution): Object for backtracking the solution path.
@@ -24,9 +23,7 @@ def a_star(node: Node, count_expanded: bool = False):
 
     while frontier:
         new_node: A_star_node = heapq.heappop(frontier)
-
-        if count_expanded:
-            num_expanded += 1
+        num_expanded += 1
 
         if new_node.is_goal():
             cur_node = new_node
