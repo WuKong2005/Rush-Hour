@@ -168,9 +168,7 @@ class Board:
         new_board = [' ' for _ in range(HEIGHT * WIDTH)]
 
         for label in self.vehicles:
-            pos = self.vehicles[label].get_position()
-            length = self.vehicles[label].get_length()
-            stride = self.vehicles[label].get_stride()
+            pos, length, stride = self.vehicles[label].get_attributes()
 
             for _ in range(length):
                 new_board[pos] = label

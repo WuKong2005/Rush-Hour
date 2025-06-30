@@ -13,7 +13,7 @@ class Node:
     def get_previous_move(self):
         return self.previous_move
     
-    def get_current_board(self):
+    def get_current_board(self) -> Board:
         return self.current_board
     
     def get_parent(self):
