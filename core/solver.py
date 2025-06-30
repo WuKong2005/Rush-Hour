@@ -3,7 +3,7 @@ from search_algorithm.bfs import bfs
 from search_algorithm.dfs import dfs
 from search_algorithm.backtracking import backtracking
 from search_algorithm.ucs import ucs
-from search_algorithm.a_star import a_star
+from search_algorithm.a_star import a_star, weight_a_star
 from solution import Solution
 from search_algorithm.Node import Node
 import copy
@@ -17,7 +17,8 @@ class Solver:
         'dfs'           : dfs,
         'backtracking'  : backtracking,
         'ucs'           : ucs,
-        'a_star'        : a_star
+        'a_star'        : a_star,
+        'weight_a_star' : weight_a_star
     }
 
     def __init__(self, init_board: Board = None, algorithm: str = None):

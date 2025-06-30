@@ -9,10 +9,6 @@ class Node:
 
     def __eq__(self, other: "Node"):
         return True
-        # return self.heuristic() == other.heuristic()
-    
-    # def __lt__(self, other: "Node"):
-    #     return self.heuristic() < other.heuristic()
 
     def get_previous_move(self):
         return self.previous_move
@@ -48,12 +44,23 @@ class Node:
     def heuristic(self):
         return self.current_board.heuristic()
     
+    def weight_heuristic(self):
+        return self.current_board.heuristic() << 3
+    
 
 class A_star_node (Node):
-    def __init__(self, g_cost: int, node: Node):
+    def __init__(self, g_cost: int, heuristic: str, node: Node):
         super().__init__(node.previous_move, node.current_board, node.parent)
         self.g_cost = g_cost
-        self.f_cost = self.g_cost + self.heuristic()
+        self.heuristic_name = heuristic
+
+        if heuristic == 'heuristic':
+            self.f_cost = self.g_cost + self.heuristic()
+        elif heuristic == 'weight heuristic':
+            self.f_cost = self.g_cost + self.weight_heuristic()
+        else:
+            print('Invalid heuristic!')
+            return
 
     def __lt__(self, other: "A_star_node"):
         return self.f_cost < other.f_cost
@@ -71,6 +78,6 @@ class A_star_node (Node):
         for move in legal_moves:
             new_board = self.current_board.move_vehicle(move, True)
             cost = self.get_cost_move(move)
-            successors.append(A_star_node(self.g_cost + cost, Node(move, new_board, self)))
+            successors.append(A_star_node(self.g_cost + cost, self.heuristic_name, Node(move, new_board, self)))
         
         return successors

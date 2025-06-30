@@ -1,7 +1,7 @@
 from solver import Solver
 from board import Board
 
-char_board = list("ooEFBBooEFoHAAEooHDoooGIDCCoGIDooooo")
+char_board = list("ooHBBoFoHICCFAAIoooGoIJKoGDDJKooEEoo")
 
 board = Board(char_board)
 
