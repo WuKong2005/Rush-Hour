@@ -38,15 +38,6 @@ class Node:
     def is_goal(self):
         return self.current_board.is_goal()
     
-    def print(self):
-        self.current_board.print()
-
-    def heuristic(self):
-        return self.current_board.heuristic()
-    
-    def weight_heuristic(self):
-        return self.current_board.heuristic() << 3
-    
 
 class A_star_node (Node):
     def __init__(self, g_cost: int, heuristic: str, node: Node):
@@ -58,9 +49,6 @@ class A_star_node (Node):
             self.f_cost = self.g_cost + self.heuristic()
         elif heuristic == 'weight heuristic':
             self.f_cost = self.g_cost + self.weight_heuristic()
-        else:
-            print('Invalid heuristic!')
-            return
 
     def __lt__(self, other: "A_star_node"):
         return self.f_cost < other.f_cost
@@ -81,3 +69,9 @@ class A_star_node (Node):
             successors.append(A_star_node(self.g_cost + cost, self.heuristic_name, Node(move, new_board, self)))
         
         return successors
+    
+    def heuristic(self):
+        return self.current_board.heuristic()
+    
+    def weight_heuristic(self):
+        return self.current_board.heuristic() << 3

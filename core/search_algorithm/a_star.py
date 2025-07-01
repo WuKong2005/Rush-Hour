@@ -18,8 +18,9 @@ def a_star(node: Node):
     solution = Solution()
     num_expanded = 0
 
+    node = A_star_node(0, 'heuristic', node)
     reached[node.get_enum()] = node.heuristic()
-    heapq.heappush(frontier, A_star_node(0, 'heuristic', node))
+    heapq.heappush(frontier, node)
 
     while frontier:
         new_node: A_star_node = heapq.heappop(frontier)
@@ -59,8 +60,9 @@ def weight_a_star(node: Node):
     solution = Solution()
     num_expanded = 0
 
+    node = A_star_node(0, 'weight heuristic', node)
     reached[node.get_enum()] = node.heuristic()
-    heapq.heappush(frontier, A_star_node(0, 'weight heuristic', node))
+    heapq.heappush(frontier, node)
 
     while frontier:
         new_node: A_star_node = heapq.heappop(frontier)

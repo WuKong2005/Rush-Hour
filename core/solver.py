@@ -10,7 +10,6 @@ import copy
 import time
 import tracemalloc
 
-
 class Solver:
     algo_map = {
         'bfs'           : bfs,
@@ -26,7 +25,7 @@ class Solver:
         self.algorithm = algorithm
 
         self.solution = Solution()
-        self.num_expanded_state = 0
+        self.num_expanded = 0
         self.memory = 0
         self.time = 0
         
@@ -36,10 +35,10 @@ class Solver:
     def get_current_algorithm(self):
         return self.algorithm
     
-    def get_measurement(self):
-        return self.time, self.memory, self.num_expanded_state
+    def get_measurements(self):
+        return self.time, self.memory, self.num_expanded
     
-    def get_solution_steps(self):
+    def get_solution_length(self):
         return self.solution.num_moves()
     
     def set_init_board(self, new_init_board: Board):
@@ -48,7 +47,7 @@ class Solver:
     def set_algorithm(self, new_algorithm: str):
         self.algorithm = new_algorithm
 
-    def solve(self):
+    def solve(self, measure_memory: bool = False):
         '''
         Solve the problem by applying "self.current_algorithm" to find the path to goal state from "self.init_board" state
 
@@ -61,14 +60,17 @@ class Solver:
             print('Invalid algorithm!')
             return None, None
 
+        if measure_memory:
+            tracemalloc.start()
         start_time = time.time()
-        tracemalloc.start()
 
-        self.solution, self.num_expanded_state = self.algo_map[self.algorithm](Node(current_board=self.init_board))
+        self.solution, self.num_expanded = self.algo_map[self.algorithm](Node(current_board=self.init_board))
         
-        _, peak = tracemalloc.get_traced_memory()
-        tracemalloc.stop()
         end_time = time.time()
+        peak = 0
+        if measure_memory:
+            _, peak = tracemalloc.get_traced_memory()
+            tracemalloc.stop()
 
         self.time = end_time - start_time
         self.memory = peak / 1024
