@@ -1,5 +1,5 @@
 import random
-from board import Board
+from core.board import Board
 
 def get_random_maps(filename: str, k: int):
     """Reservoir sampling"""

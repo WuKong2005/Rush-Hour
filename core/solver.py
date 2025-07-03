@@ -1,11 +1,11 @@
-from board import Board
-from search_algorithm.bfs import bfs
-from search_algorithm.dfs import dfs
-from search_algorithm.backtracking import backtracking
-from search_algorithm.ucs import ucs
-from search_algorithm.a_star import a_star, weight_a_star
-from solution import Solution
-from search_algorithm.Node import Node
+from core.board import Board
+from core.search_algorithm.bfs import bfs
+from core.search_algorithm.dfs import dfs
+from core.search_algorithm.backtracking import backtracking
+from core.search_algorithm.ucs import ucs
+from core.search_algorithm.a_star import a_star, weight_a_star
+from core.solution import Solution
+from core.search_algorithm.Node import Node
 import copy
 import time
 import tracemalloc

@@ -1,4 +1,4 @@
-from solution import Solution
+from core.solution import Solution
 from .Node import A_star_node, Node
 import heapq
 

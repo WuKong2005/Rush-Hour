@@ -1,16 +1,22 @@
 import pygame
-from vehicle import Vehicle
+from core.vehicle import Vehicle
+from core.constants import *
 
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
-CELL_SIZE = 80
-GRID_SIZE = 2
+pygame.init()
+
+DISPLAY = pygame.display.Info()
+SCALE = 0.8
+SCREEN_WIDTH = SCALE * DISPLAY.current_w
+SCREEN_HEIGHT = SCALE * DISPLAY.current_h
+CELL_SIZE = SCALE * 80 
+GRID_SIZE = SCALE * 2
 BOARD_SIZE = CELL_SIZE * 6 + GRID_SIZE * 7
-BORDER_WIDTH = 1
-MARGIN = 4
+BORDER_WIDTH = SCALE * 1
+MARGIN = SCALE * 4
 VEHICLE_COLOR = "dodgerblue3"
 CELL_COLOR = "beige"
 
+# (stride, color, init_x, init_y, height, width)
 VehicleInfo = tuple[int, int, int, int, int, int]
 
 def render_board_grid(screen: pygame.Surface, init_middle_x, init_middle_y):
@@ -19,8 +25,8 @@ def render_board_grid(screen: pygame.Surface, init_middle_x, init_middle_y):
     board_rect = pygame.Rect(board_x - BORDER_WIDTH, board_y - BORDER_WIDTH, BOARD_SIZE + BORDER_WIDTH * 2, BOARD_SIZE + BORDER_WIDTH * 2)
     pygame.draw.rect(screen, "black", board_rect)
     
-    for c in range(6):
-        for r in range(6):
+    for c in range(WIDTH):
+        for r in range(HEIGHT):
             cell_x = board_x + GRID_SIZE * (c + 1) + CELL_SIZE * c
             cell_y = board_y + GRID_SIZE * (r + 1) + CELL_SIZE * r
             pygame.draw.rect(screen, CELL_COLOR, pygame.Rect(cell_x, cell_y, CELL_SIZE, CELL_SIZE))
@@ -34,19 +40,17 @@ def render_board_grid(screen: pygame.Surface, init_middle_x, init_middle_y):
     
     return board_x, board_y
 
-def construct_list_vehicels(board_x: int, board_y: int, vehicles: dict[str, Vehicle]):
+def construct_list_vehicles(board_x: int, board_y: int, vehicles: dict[str, Vehicle]) -> dict[str, VehicleInfo]:
     list_vehicle = dict()
     
     for label in vehicles:
-        pos = vehicles[label].get_position()
-        length = vehicles[label].get_length()
-        stride = vehicles[label].get_stride()
+        pos, length, stride = vehicles[label].get_attributes()
         
-        c = pos % 6
-        r = pos // 6
-        len_vertical = 1 if stride == 1 else length
-        len_horizontal = length if stride == 1 else 1
-        color = "red" if label == "A" else VEHICLE_COLOR
+        c = pos % WIDTH
+        r = pos // HEIGHT
+        len_vertical = 1 if stride == H else length
+        len_horizontal = length if stride == H else 1
+        color = "red" if label == MAIN_LABEL else VEHICLE_COLOR
         
         init_x = board_x + GRID_SIZE * (c + 1) + CELL_SIZE * c + MARGIN
         init_y = board_y + GRID_SIZE * (r + 1) + CELL_SIZE * r + MARGIN

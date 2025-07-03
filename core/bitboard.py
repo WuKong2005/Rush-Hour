@@ -1,5 +1,5 @@
 import numpy as np
-from constants import HEIGHT, WIDTH
+from core.constants import HEIGHT, WIDTH
 
 bb = np.uint64
 

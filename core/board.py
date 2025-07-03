@@ -1,8 +1,8 @@
 import numpy as np
-from bitboard import bb
-from vehicle import Vehicle
-from constants import HEIGHT, WIDTH, H, V, MAIN_LABEL
-from solution import Move
+from core.bitboard import bb
+from core.vehicle import Vehicle
+from core.constants import HEIGHT, WIDTH, H, V, MAIN_LABEL
+from core.solution import Move
 import copy
 
 class EnumBoard:

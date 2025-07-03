@@ -1,5 +1,5 @@
-from bitboard import bb
-from constants import HEIGHT, WIDTH, H, V
+from core.bitboard import bb
+from core.constants import HEIGHT, WIDTH, H, V
 
 class Vehicle:
     def __init__(self, position, length, stride):

@@ -1,7 +1,6 @@
-from solution import Solution
+from core.solution import Solution, Move
 from .Node import Node
-from board import Board
-from solution import Move
+from core.board import Board
 from collections import deque
 
 def backtracking(node: Node):

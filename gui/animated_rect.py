@@ -1,7 +1,7 @@
 import pygame
 import copy
-from solution import Move
-from board_ui import CELL_SIZE, GRID_SIZE, VehicleInfo
+from core.solution import Move
+from gui.board_ui import CELL_SIZE, GRID_SIZE, VehicleInfo
 
 def ease_linear(t):
     """No easing - constant speed"""

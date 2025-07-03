@@ -1,11 +1,11 @@
 import pygame
 import sys
 import random
-import animated_rect
-from map_sample import *
-from board_ui import *
-from util import *
-from solver import Solver
+from gui.animated_rect import *
+from gui.map_sample import *
+from gui.board_ui import *
+from gui.util import *
+from core.solver import Solver
 
 # constants
 ALGO_NAME = list(Solver().algo_map.keys())
@@ -19,13 +19,13 @@ running = True
 dt = 0
         
 # font 
-font = pygame.font.Font("font/Roboto-VariableFont_wdth,wght.ttf", 30)
-font_big = pygame.font.Font("font/Roboto-VariableFont_wdth,wght.ttf", 42)
-font_light = pygame.font.Font("font/Roboto-Light.ttf", 30)
+font = pygame.font.Font("gui/font/Roboto-VariableFont_wdth,wght.ttf", 30)
+font_big = pygame.font.Font("gui/font/Roboto-VariableFont_wdth,wght.ttf", 42)
+font_light = pygame.font.Font("gui/font/Roboto-Light.ttf", 30)
 
 # global states, update for each loop
 mode = 0
-maps = get_random_maps("rush_db.txt", MAXIMUM_MAPS)
+maps = get_random_maps("core/rush_db.txt", MAXIMUM_MAPS)
 map_index = 0
 board = init_board(maps, map_index)
 
@@ -95,7 +95,7 @@ while running:
     #     continue
     
     init_middle_x = (screen.get_width() / 2) + 225
-    init_middle_y = (screen.get_height() / 2) + 50
+    init_middle_y = (screen.get_height() / 2) + 30
     board_x, board_y = render_board_grid(screen, init_middle_x, init_middle_y)
     
     pygame.draw.rect(screen, CELL_COLOR, rect=pygame.Rect(init_middle_x - BOARD_SIZE // 2 - 450, board_y, 425, BOARD_SIZE))
@@ -125,7 +125,7 @@ while running:
         pygame.draw.rect(screen, "black", rect=pygame.Rect(init_middle_x - BOARD_SIZE // 2 - 450 + 211, board_y + 82 * 4, 214, 85), width=3)
     
     if mode == 0:
-        list_vehicle = construct_list_vehicels(board_x, board_y, board.vehicles)
+        list_vehicle = construct_list_vehicles(board_x, board_y, board.vehicles)
         static_render(screen, board_x, board_y, list_vehicle)
 
         if change_map and choose_algo < 3:
@@ -144,8 +144,8 @@ while running:
             if sol.is_solvable():
                 render_text_center(screen, font, "FOUND A SOLUTION!", init_middle_x - BOARD_SIZE // 2 - 450, board_y + 82 * 2, 425, 85, "black", "green")
                 
-                num_step = sol.get_solution_steps()
-                time_required = sol.get_measurement()[0]
+                num_step = sol.get_solution_length()
+                time_required = sol.get_measurements()[0]
                 
                 render_text_center(screen, font, "STEP", init_middle_x - BOARD_SIZE // 2 - 450, board_y + 82 * 3, 214, 85)
                 render_text_center(screen, font, "TIME(s)", init_middle_x - BOARD_SIZE // 2 - 450, board_y + 82 * 4, 214, 85)
@@ -156,7 +156,7 @@ while running:
                 if finish_solving:
                     choose_algo = 0
                 elif start_solving:
-                    animation_list, fixed_vehicle = animated_rect.create_animation_list(sol.solution.get_solution(), list_vehicle)
+                    animation_list, fixed_vehicle = create_animation_list(sol.solution.get_solution(), list_vehicle)
                     list_cost = sol.get_list_cost()
                     print(len(sol.solution.get_solution()), len(animation_list))
                     
@@ -210,12 +210,12 @@ while running:
                             anim_state = 0   
                     next_move = False
                 
-                order = animated_rect.init_animation_order(animation_list)
-                animated_rect.render_animation(animation_list, order, 0, anim_index, screen, render_vehicle)
+                order = init_animation_order(animation_list)
+                render_animation(animation_list, order, 0, anim_index, screen, render_vehicle)
                 
             else:
-                order = animated_rect.init_animation_order(animation_list)
-                result = animated_rect.render_animation(animation_list, order, dt, anim_index, screen, render_vehicle)
+                order = init_animation_order(animation_list)
+                result = render_animation(animation_list, order, dt, anim_index, screen, render_vehicle)
                 if result == True:
                     anim_index += 1
                     if anim_index == len(animation_list):
