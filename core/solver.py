@@ -16,8 +16,8 @@ class Solver:
         'DFS'           : dfs,
         'Backtracking'  : backtracking,
         'UCS'           : ucs,
-        'A*'        : a_star,
-        'Weight A*' : weight_a_star
+        'A*'            : a_star,
+        'Weight A*'     : weight_a_star
     }
 
     def __init__(self, init_board: Board = None, algorithm: str = None):
@@ -72,11 +72,18 @@ class Solver:
             _, peak = tracemalloc.get_traced_memory()
             tracemalloc.stop()
 
-        self.time = end_time - start_time
-        self.memory = peak / 1024
+        self.time = round(end_time - start_time, 3)
+        self.memory = round(peak / 1024, 3)
 
     def is_solvable(self):
         return self.solution is not None
+
+    def print_measurement(self, indent: str):
+        if self.solution is not None:
+            print(f'{indent}Number of steps             : {self.solution.num_moves()}')
+        print(f'{indent}Running time                : {self.time}')
+        print(f'{indent}Peak memory usage           : {self.memory} KB')
+        print(f'{indent}Number of expanded nodes    : {self.num_expanded}')
 
     def print_solution(self):
         board = copy.deepcopy(self.init_board)

@@ -37,7 +37,8 @@ def backtracking(node: Node):
         if index >= len(legal_moves[enum]):
             visited.remove(enum)
             del legal_moves[enum]
-            state.move_vehicle(undo)
+            if undo is not None:
+                state.move_vehicle(undo)
             continue
 
         move: Move = legal_moves[enum][index]

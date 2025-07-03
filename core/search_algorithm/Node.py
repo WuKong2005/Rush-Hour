@@ -74,4 +74,4 @@ class A_star_node (Node):
         return self.current_board.heuristic()
     
     def weight_heuristic(self):
-        return self.current_board.heuristic() << 3
+        return self.current_board.heuristic() << 1

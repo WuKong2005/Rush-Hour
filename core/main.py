@@ -1,16 +1,46 @@
 from solver import Solver
 from board import Board
 
-char_board = list("ooHBBoFoHICCFAAIoooGoIJKoGDDJKooEEoo")
+list_algo = [
+    # 'DFS',
+    # 'Backtracking',
+    # 'BFS',
+    # 'UCS',
+    # 'A*',
+    'Weight A*'
+]
+list_board = [
+    # "BBoJoooHoJCCGHAAKLGDDoKLooIEEoFFIooo",
+    # "BBHooKFoHoJKFAAoJLoGCCoLoGoIDDEEoIoo",
+    # "oBBCCooooJDDAAoJKoHoEEKLHoIFFLGGIooo",
+    # "BBBKLMHCCKLMHoAALMDDJooooIJoEEoIFFGG",
+    # "GBBoLoGHIoLMGHIAAMCCCKoMooJKDDEEJFFo",
+    # "ooIBBBooIKooAAJKoLCCJDDLGHEEoLGHFFoo",
+    # "IBBCCMIoJDDMAAJKoooooKEEFFFoLoGGHHLo",
+    # "ooBBBFooCooFAACooFooCooDooEEEDoooooo",
+    # "oBBBooooEFooAAEFGGoCCDDooooooooooooo"
+    "ooHBBoFoHICCFAAIoooGoIJKoGDDJKooEEoo"
+]
 
-board = Board(char_board)
+for str in list_board:
+    board = Board(list(str))
 
-sol = Solver(Board(char_board), 'a_star')
+    print(f'\n\nBoard: {str}')
+    print('-' * 20)
 
-sol.solve()
+    for algo in list_algo:
+        solver = Solver(board, algo)
 
-# sol.print_solution()
-print(f'number of steps: {sol.get_solution_steps()}')
-print(f'time: {round(sol.time, 3)} seconds')
-print(f'memory usage: {round(sol.memory, 3)} KB')
-print(f'number of expanded nodes: {sol.num_expanded_state}')
+        print(f'\tAlgorithm: {algo}')
+        print('\t' + '-' * 20)
+
+        print(f'\tMeasure memory:')
+        solver.solve(measure_memory=True)
+        solver.print_measurement(indent='\t\t')
+
+        print('')
+        print(f'\tMeasure time:')
+        for _ in range(3):
+            solver.solve()
+            solver.print_measurement(indent='\t\t')
+            print('')
