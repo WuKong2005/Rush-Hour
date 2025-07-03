@@ -13,12 +13,12 @@ import tracemalloc
 
 class Solver:
     algo_map = {
-        'bfs'           : bfs,
-        'dfs'           : dfs,
-        'backtracking'  : backtracking,
-        'ucs'           : ucs,
-        'a_star'        : a_star,
-        'weight_a_star' : weight_a_star
+        'BFS'           : bfs,
+        'DFS'           : dfs,
+        'Backtracking'  : backtracking,
+        'UCS'           : ucs,
+        'A*'        : a_star,
+        'Weight A*' : weight_a_star
     }
 
     def __init__(self, init_board: Board = None, algorithm: str = None):
@@ -103,3 +103,19 @@ class Solver:
 
         else:
             print('No solution found!')
+            
+    def get_list_cost(self):
+        board = copy.deepcopy(self.init_board)
+        g_cost = 0
+        
+        list_cost = [(0, board.heuristic())]
+
+        if self.solution is not None:
+            list_moves = self.solution.get_solution()
+            for move in list_moves:
+                g_cost += board.get_cost_move(move)
+                board.move_vehicle(move)
+                list_cost.append((g_cost, board.heuristic()))
+            return list_cost
+        else:
+            return None
