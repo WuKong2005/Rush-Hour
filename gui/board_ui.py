@@ -1,6 +1,7 @@
 import pygame
 from core.vehicle import Vehicle
 from core.constants import *
+from gui.util import *
 
 pygame.init()
 
@@ -8,11 +9,13 @@ DISPLAY = pygame.display.Info()
 SCALE = 0.8
 SCREEN_WIDTH = SCALE * DISPLAY.current_w
 SCREEN_HEIGHT = SCALE * DISPLAY.current_h
-CELL_SIZE = SCALE * 80 
+CELL_SIZE = SCALE * 78
 GRID_SIZE = SCALE * 2
 BOARD_SIZE = CELL_SIZE * 6 + GRID_SIZE * 7
-BORDER_WIDTH = SCALE * 1
+BORDER_WIDTH = SCALE * 2
 MARGIN = SCALE * 4
+TABLE_SIZE_WIDTH = SCALE * 400
+TABLE_SIZE_HEIGHT = SCALE * 480
 VEHICLE_COLOR = "dodgerblue3"
 CELL_COLOR = "beige"
 

@@ -51,7 +51,7 @@ text = "This is a really long sentence with a couple of breaks. \nSometimes it w
        "This function doesn't check if the text is too high to fit on the height of the surface though, so sometimes " \
        "text will disappear underneath the surface"
        
-def render_text_center(screen, font: pygame.font.Font, short_text, left, top, width, height, color = "black", background_color = None, border = 3):
+def render_text_center(screen, font: pygame.font.Font, short_text, left, top, width, height, color = "black", background_color = None, border = 2):
     font_width, font_height = font.size(short_text)
     text_surface = font.render(short_text, True, color)
     if background_color is not None:
