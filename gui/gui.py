@@ -108,19 +108,70 @@ while running:
         pygame.draw.rect(screen, "black", rect=pygame.Rect(table_start_x, table_start_y + i * TABLE_SIZE_HEIGHT / 6, TABLE_SIZE_WIDTH / 2, TABLE_SIZE_HEIGHT / 6), width=1)
         pygame.draw.rect(screen, "black", rect=pygame.Rect(table_start_x + TABLE_SIZE_WIDTH / 2, table_start_y + i * TABLE_SIZE_HEIGHT / 6, TABLE_SIZE_WIDTH / 2, TABLE_SIZE_HEIGHT / 6), width=1)
 
+    # render_text_center(screen, font, "MAP", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + TABLE_SIZE_HEIGHT / 12, 0, 0)
+    # render_text_center(screen, font, "01", table_start_x + 3 * TABLE_SIZE_WIDTH / 4, table_start_y + TABLE_SIZE_HEIGHT / 12, 0, 0)
     render_text_center(screen, font, "MAP", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + TABLE_SIZE_HEIGHT / 12, 0, 0)
-    render_text_center(screen, font, "01", table_start_x + 3 * TABLE_SIZE_WIDTH / 4, table_start_y + TABLE_SIZE_HEIGHT / 12, 0, 0)
+    map_text_x = table_start_x + 3 * TABLE_SIZE_WIDTH / 4
+    map_text_y = table_start_y + TABLE_SIZE_HEIGHT / 12
+    render_text_center(screen, font, "01", map_text_x, map_text_y, 0, 0)
+    arrow_w, arrow_h = 10, 20
+    pygame.draw.polygon(screen, "black", [
+        (map_text_x - 74, map_text_y),
+        (map_text_x - 74 + arrow_w, map_text_y - arrow_h // 2),
+        (map_text_x - 74 + arrow_w, map_text_y + arrow_h // 2)
+    ])
+    pygame.draw.polygon(screen, "black", [
+        (map_text_x + 74, map_text_y),
+        (map_text_x + 74 - arrow_w, map_text_y - arrow_h // 2),
+        (map_text_x + 74 - arrow_w, map_text_y + arrow_h // 2)
+    ])
 
+    # render_text_center(screen, font, "ALGORITHM", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + 3 * TABLE_SIZE_HEIGHT / 12, 0, 0)
+    # render_text_center(screen, font, "Backtracking", table_start_x + 3 * TABLE_SIZE_WIDTH / 4, table_start_y + 3 * TABLE_SIZE_HEIGHT / 12, 0, 0)
     render_text_center(screen, font, "ALGORITHM", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + 3 * TABLE_SIZE_HEIGHT / 12, 0, 0)
-    render_text_center(screen, font, "Backtracking", table_start_x + 3 * TABLE_SIZE_WIDTH / 4, table_start_y + 3 * TABLE_SIZE_HEIGHT / 12, 0, 0)
+    algo_text_x = table_start_x + 3 * TABLE_SIZE_WIDTH / 4
+    algo_text_y = table_start_y + 3 * TABLE_SIZE_HEIGHT / 12
+    render_text_center(screen, font, "DFS", algo_text_x, algo_text_y, 0, 0)
+    pygame.draw.polygon(screen, "black", [
+        (algo_text_x - 74, algo_text_y),
+        (algo_text_x - 74 + arrow_w, algo_text_y - arrow_h // 2),
+        (algo_text_x - 74 + arrow_w, algo_text_y + arrow_h // 2)
+    ])
+    pygame.draw.polygon(screen, "black", [
+        (algo_text_x + 74, algo_text_y),
+        (algo_text_x + 74 - arrow_w, algo_text_y - arrow_h // 2),
+        (algo_text_x + 74 - arrow_w, algo_text_y + arrow_h // 2)
+    ])
 
     render_text_center(screen, font, "STEPS", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + 5 * TABLE_SIZE_HEIGHT / 12, 0, 0)
     render_text_center(screen, font, "TIME(s)", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + 7 * TABLE_SIZE_HEIGHT / 12, 0, 0)
     render_text_center(screen, font, "COST", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + 9 * TABLE_SIZE_HEIGHT / 12, 0, 0)
+    # render_text_center(screen, font, "MEMORY(KB)", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + 11 * TABLE_SIZE_HEIGHT / 12, 0, 0)
+    # render_text_center(screen, font, "YES", table_start_x + 3 * TABLE_SIZE_WIDTH / 4, table_start_y + 11 * TABLE_SIZE_HEIGHT / 12, 0, 0)
     render_text_center(screen, font, "MEMORY(KB)", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + 11 * TABLE_SIZE_HEIGHT / 12, 0, 0)
-    render_text_center(screen, font, "YES", table_start_x + 3 * TABLE_SIZE_WIDTH / 4, table_start_y + 11 * TABLE_SIZE_HEIGHT / 12, 0, 0)
+    memory_text_x = table_start_x + 3 * TABLE_SIZE_WIDTH / 4
+    memory_text_y = table_start_y + 11 * TABLE_SIZE_HEIGHT / 12
+    render_text_center(screen, font, "YES", memory_text_x, memory_text_y, 0, 0)
+    pygame.draw.polygon(screen, "black", [
+        (memory_text_x - 74, memory_text_y),
+        (memory_text_x - 74 + arrow_w, memory_text_y - arrow_h // 2),
+        (memory_text_x - 74 + arrow_w, memory_text_y + arrow_h // 2)
+    ])
+    pygame.draw.polygon(screen, "black", [
+        (memory_text_x + 74, memory_text_y),
+        (memory_text_x + 74 - arrow_w, memory_text_y - arrow_h // 2),
+        (memory_text_x + 74 - arrow_w, memory_text_y + arrow_h // 2)
+    ])
     
     render_text_center(screen, font_big, "RUSH HOUR SOLVER", screen.get_width() / 2, 40, 0, 0)
+
+    pygame.draw.rect(screen, CELL_COLOR, rect=pygame.Rect(table_start_x + (TABLE_SIZE_WIDTH - 120) // 2, table_start_y + TABLE_SIZE_HEIGHT + 50, 120, 50))
+    pygame.draw.rect(screen, "black", rect=pygame.Rect(table_start_x + (TABLE_SIZE_WIDTH - 120) // 2, table_start_y + TABLE_SIZE_HEIGHT + 50, 120, 50), width=3)
+    render_text_center(screen, font, "SOLVE", table_start_x + (TABLE_SIZE_WIDTH - 120) // 2, table_start_y + TABLE_SIZE_HEIGHT + 50, 120, 50, "black", "white")
+
+    pygame.draw.rect(screen, CELL_COLOR, rect=pygame.Rect(board_x + (BOARD_SIZE - 120) // 2, table_start_y + TABLE_SIZE_HEIGHT + 50, 120, 50))
+    pygame.draw.rect(screen, "black", rect=pygame.Rect(board_x + (BOARD_SIZE - 120) // 2, table_start_y + TABLE_SIZE_HEIGHT + 50, 120, 50), width=3)
+    render_text_center(screen, font, "START", board_x + (BOARD_SIZE - 120) // 2, table_start_y + TABLE_SIZE_HEIGHT + 50, 120, 50, "black", "white")
 
     # if mode == 1 or choose_algo >= 1:
     #     render_text_center(screen, font, "ALGORITHM", init_middle_x - BOARD_SIZE // 2 - 450, board_y + 82, 214, 85)
