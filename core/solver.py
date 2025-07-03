@@ -17,7 +17,7 @@ class Solver:
         'Backtracking'  : backtracking,
         'UCS'           : ucs,
         'A*'            : a_star,
-        'Weight A*'     : weight_a_star
+        'Weighted A*'     : weight_a_star
     }
 
     def __init__(self, init_board: Board = None, algorithm: str = None):

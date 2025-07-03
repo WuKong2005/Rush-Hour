@@ -15,7 +15,7 @@ def ease_in_out_cubic(t):
         return 1 - pow(-2 * t + 2, 3) / 2
     
 class AnimatedVehicle:
-    def __init__(self, label, start_pos, end_pos, width, height, color, duration=0.5, easing_func=ease_in_out_cubic):
+    def __init__(self, label, start_pos, end_pos, width, height, color, duration=0.6, easing_func=ease_in_out_cubic):
         self.label = label
         self.start_pos = start_pos
         self.end_pos = end_pos
