@@ -147,7 +147,7 @@ while running:
                 finish_solving = True
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("white")
+    screen.fill(BACKGROUND_COLOR)
     
     # if help == True:
     #     # Help screen, explain how to interact with this program
@@ -161,7 +161,7 @@ while running:
 
     # Information table
     # draw
-    pygame.draw.rect(screen, CELL_COLOR, rect=pygame.Rect(table_start_x, table_start_y, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT))
+    pygame.draw.rect(screen, TABLE_BACKGROUND_COLOR, rect=pygame.Rect(table_start_x, table_start_y, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT))
     pygame.draw.rect(screen, "black", rect=pygame.Rect(table_start_x, table_start_y, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT), width=3)
     for i in range(6):
         pygame.draw.rect(screen, "black", rect=pygame.Rect(table_start_x, table_start_y + i * TABLE_SIZE_HEIGHT / 6, TABLE_SIZE_WIDTH / 2, TABLE_SIZE_HEIGHT / 6), width=1)
@@ -222,22 +222,17 @@ while running:
     render_text_center(screen, font_big, "RUSH HOUR SOLVER", screen.get_width() / 2, board_y / 2, 0, 0)
 
     # button
-    pygame.draw.rect(screen, CELL_COLOR, SOLVE_BOX)
     pygame.draw.rect(screen, "black", SOLVE_BOX, width=3)
-    render_text_center(screen, font, "SOLVE", table_start_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT / 8, "black", "white")
+    render_text_center(screen, font, "SOLVE", table_start_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT / 8, "black", (80,255,70))
 
-    pygame.draw.rect(screen, CELL_COLOR, START_BOX)
     pygame.draw.rect(screen, "black", START_BOX, width=3)
-    render_text_center(screen, font, ("START" if mode == 0 else "RESET"), board_x + BOARD_SIZE * 3 // 8, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8, "black", "white")
+    render_text_center(screen, font, ("START" if mode == 0 else "RESET"), board_x + BOARD_SIZE * 3 // 8, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8, "black", (80,255,70))
 
-    pygame.draw.rect(screen, "red", FINISH_BOX)
     pygame.draw.rect(screen, "black", FINISH_BOX, width=3)
-    render_text_center(screen, font, "FINISH", board_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8, "black", "white")
+    render_text_center(screen, font, "FINISH", board_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8, "black", (255, 80, 80))
 
-    pygame.draw.rect(screen, CELL_COLOR, PAUSE_BOX)
     pygame.draw.rect(screen, "black", PAUSE_BOX, width=3)
-    render_text_center(screen, font, "PAUSE", board_x + BOARD_SIZE * 3 // 4, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8, "black", "white")
-
+    render_text_center(screen, font, "PAUSE", board_x + BOARD_SIZE * 3 // 4, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8, "black", (255, 120, 120))
     render_text_center(screen, font_light, "#" + f"{map_index:02d}", map_text_x, map_text_y, 0, 0)
     
     if mode == 1 or choose_algo >= 1:
@@ -271,7 +266,7 @@ while running:
 
         elif choose_algo == 3:
             if sol.is_solvable():
-                render_text_center(screen, font, "FOUND A SOLUTION! START?", table_start_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT / 8, "black", "green")
+                render_text_center(screen, font, "FOUND A SOLUTION! START?", table_start_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT / 8, "black", (80,255,70))
                 
                 num_step = sol.get_solution_length()
                 time_required = sol.get_measurements()[0]

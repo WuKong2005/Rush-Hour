@@ -18,6 +18,8 @@ TABLE_SIZE_WIDTH = SCALE * 400
 TABLE_SIZE_HEIGHT = SCALE * 480
 VEHICLE_COLOR = "dodgerblue3"
 CELL_COLOR = "beige"
+TABLE_BACKGROUND_COLOR = CELL_COLOR
+BACKGROUND_COLOR = (222, 233, 232)
 
 # (stride, color, init_x, init_y, height, width)
 VehicleInfo = tuple[int, int, int, int, int, int]
