@@ -5,7 +5,6 @@ This application simulates various search algorithms on Rush Hour puzzles.
 Navigate through different maps and algorithms to compare their performance.
 
 === BASIC CONTROLS ===
-H - Help (available at any time)
 Enter - Switch to next map
 Space - Enter algorithm selection mode / Start algorithm
 = - Switch between algorithms (after pressing Space once)
@@ -46,4 +45,3 @@ Esc - Exit animation
 - Compare different algorithms on the same map
 - Note performance differences between BFS, DFS, A*, etc.
 - Use manual animation control to understand solution steps
-- Press H anytime if you need help"""

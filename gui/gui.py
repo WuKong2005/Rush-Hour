@@ -1,13 +1,14 @@
 import pygame
 import sys
-import random
 from gui.animated_rect import *
 from gui.map_sample import *
 from gui.board_ui import *
 from gui.util import *
+from core.solution import Move
 from core.solver import Solver
+from datetime import datetime
 
-# constants
+# name of algorithms
 ALGO_NAME = list(Solver().algo_map.keys())
 
 # pygame setup
@@ -24,8 +25,14 @@ font_big = pygame.font.Font("gui/font/Roboto-VariableFont_wdth,wght.ttf", 42)
 font_light = pygame.font.Font("gui/font/Roboto-Light.ttf", 20)
 
 # global states, update for each loop
+map_file = 'core/rush_db.txt'
+log_filename = 'log_' + datetime.now().strftime('%Y-%m-%d_%H-%M-%S') + '.txt'
+log_file = open(log_filename, "w", buffering=1)
+
+save_solution_log = False
+
 mode = 0
-maps = get_random_maps("core/rush_db.txt", MAXIMUM_MAPS)
+maps = get_random_maps(map_file, MAXIMUM_MAPS * 2)
 map_index = 0
 board = init_board(maps, map_index)
 
@@ -43,6 +50,7 @@ pause_game = False
 choose_algo = 1
 algo_index = 0
 
+# coordinates and sizes of text boxes
 init_middle_x = (screen.get_width() * 11) / 16
 init_middle_y = (screen.get_height() * 17) / 36
 board_x, board_y = render_board_grid(screen, init_middle_x, init_middle_y)
@@ -78,6 +86,13 @@ START_BOX = pygame.Rect(board_x + BOARD_SIZE * 3 // 8, table_start_y + TABLE_SIZ
 FINISH_BOX = pygame.Rect(board_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8)
 PAUSE_BOX = pygame.Rect(board_x + BOARD_SIZE * 3 // 4, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8)
 
+# main function
+log_file.write(f"Number of read maps: {len(maps)}\n")
+log_file.write(f"List of read maps:\n")
+for map in maps:
+    log_file.write(map + '\n')
+log_file.write('------------------------------------\n')
+
 while running:
     # limits FPS to 120
     # dt is delta time in seconds since last frame.
@@ -110,7 +125,7 @@ while running:
                 finish_solving = True
             # elif event.key == pygame.K_h:
             #     help = help ^ 1
-            elif event.key == pygame.K_KP_ENTER:
+            elif event.key == pygame.K_RETURN:
                 change_map = 1
             elif event.key == pygame.K_SPACE:
                 if choose_algo < 2:
@@ -159,8 +174,7 @@ while running:
     # Render main board 
     board_x, board_y = render_board_grid(screen, init_middle_x, init_middle_y)
 
-    # Information table
-    # draw
+    # Draw information table
     pygame.draw.rect(screen, TABLE_BACKGROUND_COLOR, rect=pygame.Rect(table_start_x, table_start_y, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT))
     pygame.draw.rect(screen, "black", rect=pygame.Rect(table_start_x, table_start_y, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT), width=3)
     for i in range(6):
@@ -174,7 +188,7 @@ while running:
     render_text_center(screen, font, "COST", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + 9 * TABLE_SIZE_HEIGHT / 12, 0, 0)
     render_text_center(screen, font, "HEURISTIC", table_start_x + TABLE_SIZE_WIDTH / 4, table_start_y + 11 * TABLE_SIZE_HEIGHT / 12, 0, 0)
     
-    #draw arrow
+    # draw arrows
     pygame.draw.polygon(screen, "black", [
         (map_text_x - 74, map_text_y),
         (map_text_x - 74 + arrow_w, map_text_y - arrow_h // 2),
@@ -208,106 +222,124 @@ while running:
         (steps_text_x + 74 - arrow_w, steps_text_y + arrow_h // 2)
     ])
 
-    # pygame.draw.polygon(screen, "black", [
-    #     (memory_text_x - 74, memory_text_y),
-    #     (memory_text_x - 74 + arrow_w, memory_text_y - arrow_h // 2),
-    #     (memory_text_x - 74 + arrow_w, memory_text_y + arrow_h // 2)
-    # ])
-    # pygame.draw.polygon(screen, "black", [
-    #     (memory_text_x + 74, memory_text_y),
-    #     (memory_text_x + 74 - arrow_w, memory_text_y - arrow_h // 2),
-    #     (memory_text_x + 74 - arrow_w, memory_text_y + arrow_h // 2)
-    # ])
-
     render_text_center(screen, font_big, "RUSH HOUR SOLVER", screen.get_width() / 2, board_y / 2, 0, 0)
 
-    # button
+    # render buttons
     pygame.draw.rect(screen, "black", SOLVE_BOX, width=3)
     render_text_center(screen, font, "SOLVE", table_start_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT / 8, "black", (80,255,70))
 
     pygame.draw.rect(screen, "black", START_BOX, width=3)
-    render_text_center(screen, font, ("START" if mode == 0 else "RESET"), board_x + BOARD_SIZE * 3 // 8, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8, "black", (80,255,70))
+    render_text_center(screen, font, ("START" if mode == 0 else "RESET"), board_x + BOARD_SIZE * 3 // 8, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8)
 
     pygame.draw.rect(screen, "black", FINISH_BOX, width=3)
-    render_text_center(screen, font, "FINISH", board_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8, "black", (255, 80, 80))
+    render_text_center(screen, font, "FINISH", board_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8)
 
     pygame.draw.rect(screen, "black", PAUSE_BOX, width=3)
-    render_text_center(screen, font, "PAUSE", board_x + BOARD_SIZE * 3 // 4, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8, "black", (255, 120, 120))
-    render_text_center(screen, font_light, "#" + f"{map_index:02d}", map_text_x, map_text_y, 0, 0)
+    render_text_center(screen, font, "PAUSE", board_x + BOARD_SIZE * 3 // 4, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, BOARD_SIZE // 4, TABLE_SIZE_HEIGHT / 8)
     
     if mode == 1 or choose_algo >= 1:
-        # render_text_center(screen, font, "ALGORITHM", init_middle_x - BOARD_SIZE // 2 - 450, board_y + 82, 214, 85)
+        render_text_center(screen, font_light, "#" + f"{map_index:02d}", map_text_x, map_text_y, 0, 0)
         render_text_center(screen, font_light, ALGO_NAME[algo_index], algo_text_x, algo_text_y, 0, 0)
     
-    # if mode == 1 or choose_algo >= 2:
-    #     pygame.draw.rect(screen, "black", rect=pygame.Rect(init_middle_x - BOARD_SIZE // 2 - 450, board_y + 82 * 2, 425, 85), width=3)
-    
-    # if mode == 1 or choose_algo >= 3:
-    #     pygame.draw.rect(screen, "black", rect=pygame.Rect(init_middle_x - BOARD_SIZE // 2 - 450, board_y + 82 * 3, 214, 85), width=3)
-    #     pygame.draw.rect(screen, "black", rect=pygame.Rect(init_middle_x - BOARD_SIZE // 2 - 450, board_y + 82 * 4, 214, 85), width=3)
-    #     pygame.draw.rect(screen, "black", rect=pygame.Rect(init_middle_x - BOARD_SIZE // 2 - 450 + 211, board_y + 82 * 3, 214, 85), width=3)
-    #     pygame.draw.rect(screen, "black", rect=pygame.Rect(init_middle_x - BOARD_SIZE // 2 - 450 + 211, board_y + 82 * 4, 214, 85), width=3)
-    
     if mode == 0:
+        """
+        SELECTION MODE
+        """
+        
         list_vehicle = construct_list_vehicles(board_x, board_y, board.vehicles)
         static_render(screen, board_x, board_y, list_vehicle)
-
+        
         if change_map != 0 and choose_algo < 3:
+            # change map
             map_index = (len(maps) + map_index + change_map) % len(maps)
             board = init_board(maps, map_index)
         elif choose_algo == 1:
+            # change algo
             algo_index = (len(ALGO_NAME) + algo_index + change_algo) % len(ALGO_NAME) 
         elif choose_algo == 2:
+            # perfom searching on these map and algorithm
+            log_file.write(f"Map index: #{map_index}\n")
+            log_file.write(f"Map description: {maps[map_index]}\n")
+            log_file.write(f"Algorithm: {ALGO_NAME[algo_index]}\n")
+            
             render_text_center(screen, font, "SEARCHING...", table_start_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT / 8, "black", "pink")
             pygame.display.flip()
             sol = Solver(board, ALGO_NAME[algo_index])
             sol.solve()
-            choose_algo = 3                
-
+            choose_algo = 3
+            save_solution_log = True
         elif choose_algo == 3:
+            # render their solvability and wait for next mode's decision
             if sol.is_solvable():
+                # a solution is found
                 render_text_center(screen, font, "FOUND A SOLUTION! START?", table_start_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT / 8, "black", (80,255,70))
                 
                 num_step = sol.get_solution_length()
                 time_required = sol.get_measurements()[0]
-                
                 render_text_center(screen, font_light, str(num_step), steps_text_x, steps_text_y, 0, 0)
                 render_text_center(screen, font_light, str(round(sol.time, 3)), time_text_x, time_text_y, 0, 0)
                 
+                if save_solution_log == True:
+                    log_file.write("Result: Success\n")
+                    log_file.write(f"Number of steps: {num_step}\n")
+                    log_file.write(f"Time required(s): {time_required}\n")
+                    log_file.write("List of steps:\n")
+                    for move in sol.solution.get_solution():
+                        log_file.write(move.label + ('-' + str(-move.steps) if move.steps < 0 else '+' + str(move.steps)) + '\n')
+                    log_file.write('------------------------------------\n')
+                    save_solution_log = False
+                    
                 if finish_solving:
+                    # restart the selection mode
                     choose_algo = 1
                 elif start_solving:
+                    # prepare the list of animations
                     animation_list, fixed_vehicle = create_animation_list(sol.solution.get_solution(), list_vehicle)
                     list_cost = sol.get_list_cost()
-                    print(len(sol.solution.get_solution()), len(animation_list))
                     
+                    # move to the solution animation mode
                     pause_game = False
                     mode = 1
                     anim_state = 0
                     anim_index = 0
             else:
+                # no solution available
                 render_text_center(screen, font, "NOT SOLUTION...", table_start_x, table_start_y + TABLE_SIZE_HEIGHT * 13 // 12, TABLE_SIZE_WIDTH, TABLE_SIZE_HEIGHT / 8, "black", "red")
+                
+                if save_solution_log == True:
+                    log_file.write("Result: Failure\n")
+                    log_file.write('------------------------------------\n')
+                    save_solution_log = False
+                
                 if finish_solving:
                     choose_algo = 1
-    
     elif mode == 1:
-        if start_solving:
-            restart = True
+        """
+        SOLUTION ANIMATION MODE
+        """
         
+        if start_solving:
+            # overwrite the "START" button's function
+            restart = True
         if finish_solving == True:
+            # reset control, back to the selection mode
             mode = 0
             choose_algo = 1
             algo_index = 0
         else:
             static_render(screen, board_x, board_y, fixed_vehicle)
             if pause_game == True:
+                # game is paused, enable manual control
                 if restart == True:
+                    # restart the whole animation process
                     for anim in animation_list:
                         anim.reset_animation()
                     anim_index = 0
                     anim_state = 0
                     pause_game = False
+                    
                 elif prev_move == True:
+                    # undo an animation
                     if anim_state == 2:
                         anim_index -= 1
                         animation_list[anim_index].reset_animation()
@@ -322,7 +354,9 @@ while running:
                             anim_index -= 1
                             animation_list[anim_index].reset_animation()    
                     prev_move = False
+                    
                 elif next_move == True:
+                    # redo an animation
                     if anim_state == 2:
                         pass
                     else:
@@ -335,10 +369,11 @@ while running:
                             anim_state = 0   
                     next_move = False
                 
+                # manual control, only render rectangles (no update)
                 order = init_animation_order(animation_list)
                 render_animation(animation_list, order, 0, anim_index, screen, render_vehicle)
-                
             else:
+                # automatic control, update animations and render them
                 order = init_animation_order(animation_list)
                 result = render_animation(animation_list, order, dt, anim_index, screen, render_vehicle)
                 if result == True:

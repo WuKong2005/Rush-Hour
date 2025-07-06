@@ -14,7 +14,7 @@ class Move:
 
 class Solution:
     def __init__(self):
-        self.moves = []
+        self.moves: list[Move] = []
 
     def add_move(self, new_move: Move):
         self.moves.insert(0, new_move)
