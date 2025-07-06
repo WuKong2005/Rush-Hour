@@ -1,30 +1,32 @@
-from solver import Solver
-from board import Board
+from core.solver import Solver
+from core.board import Board
 
 list_algo = [
-    # 'DFS',
-    # 'Backtracking',
-    # 'BFS',
-    # 'UCS',
-    # 'A*',
-    'Weight A*'
+    'DFS',
+    # 'Backtracking'
+    'UCS',
+    'A*',
+    'Weighted A*'
 ]
 list_board = [
-    # "BBoJoooHoJCCGHAAKLGDDoKLooIEEoFFIooo",
-    # "BBHooKFoHoJKFAAoJLoGCCoLoGoIDDEEoIoo",
-    # "oBBCCooooJDDAAoJKoHoEEKLHoIFFLGGIooo",
-    # "BBBKLMHCCKLMHoAALMDDJooooIJoEEoIFFGG",
-    # "GBBoLoGHIoLMGHIAAMCCCKoMooJKDDEEJFFo",
-    # "ooIBBBooIKooAAJKoLCCJDDLGHEEoLGHFFoo",
-    # "IBBCCMIoJDDMAAJKoooooKEEFFFoLoGGHHLo",
-    # "ooBBBFooCooFAACooFooCooDooEEEDoooooo",
-    # "oBBBooooEFooAAEFGGoCCDDooooooooooooo"
-    "ooHBBoFoHICCFAAIoooGoIJKoGDDJKooEEoo"
+    "BBoJoooHoJCCGHAAKLGDDoKLooIEEoFFIooo", # Large number of states
+    "BBHooKFoHoJKFAAoJLoGCCoLoGoIDDEEoIoo",
+    "oBBCCooooJDDAAoJKoHoEEKLHoIFFLGGIooo",
+    "BBBKLMHCCKLMHoAALMDDJooooIJoEEoIFFGG", # Large number of optimal moves
+    "GBBoLoGHIoLMGHIAAMCCCKoMooJKDDEEJFFo",
+    "ooIBBBooIKooAAJKoLCCJDDLGHEEoLGHFFoo",
+    "ooBBBFooCooFAACooFooCooDooEEEDoooooo", # No solution
+    "oBBBooooEFooAAEFGGoCCDDooooooooooooo",
+    "ooHBBoFoHICCFAAIoooGoIJKoGDDJKooEEoo", # Large number of expanded nodes + backtracking is very fast
+    "GoBBBLGCCJoLAAIJoooHIoDDoHEEKoFFooKo", # A* is as twice as slower than Weighted A*, WA* = 81 > A* = 80 
+    "BBBooLCCIoKLAAIoKMGHDDoMGHoJEEGFFJoo", # UCS ~~ BFS
+    "BBooKoCCooKoGHAAKoGHIJDDEEIJoLoFFFoL", 
+    "BBoooLGIJooLGIJAAMCCJKoMHooKDDHEEFFo"  # UCS faster than BFS, and UCS expands less nodes than BFS 
 ]
 
 for str in list_board:
     board = Board(list(str))
-
+    board.print()
     print(f'\n\nBoard: {str}')
     print('-' * 20)
 
@@ -34,13 +36,15 @@ for str in list_board:
         print(f'\tAlgorithm: {algo}')
         print('\t' + '-' * 20)
 
-        print(f'\tMeasure memory:')
+        print(f'\tMeasure memory: ')
         solver.solve(measure_memory=True)
         solver.print_measurement(indent='\t\t')
 
         print('')
-        print(f'\tMeasure time:')
-        for _ in range(3):
-            solver.solve()
-            solver.print_measurement(indent='\t\t')
-            print('')
+        # print(f'\tMeasure time:')
+        # for _ in range(1):
+        #     solver.solve()
+        #     # solver.print_solution()
+        #     solver.print_measurement(indent='\t\t')
+        
+        # print('')
