@@ -3,10 +3,11 @@ from core.board import Board
 
 list_algo = [
     'DFS',
-    # 'Backtracking'
+    'BFS',
     'UCS',
     'A*',
     'Weighted A*'
+    # "Backtracking"
 ]
 list_board = [
     "BBoJoooHoJCCGHAAKLGDDoKLooIEEoFFIooo", # Large number of states
@@ -24,9 +25,24 @@ list_board = [
     "BBoooLGIJooLGIJAAMCCJKoMHooKDDHEEFFo"  # UCS faster than BFS, and UCS expands less nodes than BFS 
 ]
 
+print("MEASURE MEMORY: ")
+print('-' * 20)
 for str in list_board:
     board = Board(list(str))
-    board.print()
+    print(f'\n\nBoard: {str}')
+    print('-' * 20)
+
+    for algo in list_algo:
+        solver = Solver(board, algo)
+
+        solver.solve(measure_memory=True)
+        print(f'\tAlgorithm: {algo} --> Memory: {solver.memory}KB')
+    
+
+print("MEASURE TIME: ")
+print('-' * 20)
+for str in list_board:
+    board = Board(list(str))
     print(f'\n\nBoard: {str}')
     print('-' * 20)
 
@@ -36,15 +52,23 @@ for str in list_board:
         print(f'\tAlgorithm: {algo}')
         print('\t' + '-' * 20)
 
-        print(f'\tMeasure memory: ')
-        solver.solve(measure_memory=True)
-        solver.print_measurement(indent='\t\t')
+        time = 0
+        length = 0
+        cost = 0
+        expanded = 0
 
-        print('')
-        # print(f'\tMeasure time:')
-        # for _ in range(1):
-        #     solver.solve()
-        #     # solver.print_solution()
-        #     solver.print_measurement(indent='\t\t')
+        solver.solve()
+        time, _, expanded = solver.get_measurements()
+        length = solver.get_solution_length()
+        cost = solver.get_solution_cost()
+
+        for _ in range(4):
+            solver.solve()
+            time += solver.time
         
-        # print('')
+        time = round(time / 5, 3)
+
+        print(f'\t\tSolution Depth: {length}')
+        print(f'\t\tSolution cost : {cost}')
+        print(f'\t\tRuntime       : {time}')
+        print(f'\t\tExpanded Nodes: {expanded}')

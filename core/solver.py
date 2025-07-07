@@ -41,6 +41,20 @@ class Solver:
     def get_solution_length(self):
         return self.solution.num_moves()
     
+    def get_solution_cost(self):
+        board = copy.deepcopy(self.init_board)
+        g_cost = 0
+
+        if self.solution is not None:
+            list_moves = self.solution.get_solution()
+            for move in list_moves:
+                g_cost += board.get_cost_move(move)
+                board.move_vehicle(move)
+            return g_cost
+        
+        return -1
+
+    
     def set_init_board(self, new_init_board: Board):
         self.init_board = new_init_board
 
@@ -77,13 +91,6 @@ class Solver:
 
     def is_solvable(self):
         return self.solution is not None
-
-    def print_measurement(self, indent: str):
-        if self.solution is not None:
-            print(f'{indent}Number of steps             : {self.solution.num_moves()}')
-        print(f'{indent}Running time                : {self.time}')
-        print(f'{indent}Peak memory usage           : {self.memory} KB')
-        print(f'{indent}Number of expanded nodes    : {self.num_expanded}')
 
     def print_solution(self):
         board = copy.deepcopy(self.init_board)
