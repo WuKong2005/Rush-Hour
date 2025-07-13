@@ -37,4 +37,4 @@ def init_board(selected_maps: list[str], index: int):
     if index < len(selected_maps):
         return Board(list(selected_maps[index]))
     
-MAXIMUM_MAPS = 12
+MAXIMUM_MAPS = 13
