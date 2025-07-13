@@ -124,7 +124,7 @@ There are 13 lines in the map file, and the reasons we choosed these maps, start
 
 3. Run the program using the following command:
    ```bash
-    python -m gui.main
+    python main.py
 
 ## 6. INSTALLATION
 
