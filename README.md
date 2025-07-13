@@ -76,7 +76,8 @@ Navigate through different maps and algorithms to compare their performance.
 
 This root folder is the source code folder of this project. We separate our implementation into two subfolders: `core` and `gui`. 
 - `core` contains implementation of search algorithms and solvers.
-- `gui` contains GUI implementation, divided into multiple submodules to enhance organization. The main module in this subfolder is `main`, used to start the GUI application.
+- `gui` contains GUI implementation, divided into multiple submodules to enhance organization. 
+Outside of those subdirectories is `main.py`, the main module to start the GUI application.
 
 ## 4. MAP FORMAT AND MAP DESCRIPTION
 Maps are saved in `gui/map.txt`. The map description and steps in solution follow the same format as board description and solution description in [this article](https://www.michaelfogleman.com/rush/). Still, I want to repeat the format of each map as follow:
