@@ -23,13 +23,17 @@ def get_random_maps(filename: str, k: int):
     
     with open(filename, 'r') as file:
         for i, line in enumerate(file):
+            if i < k:
+                selected_lines[i] = line.strip()
+                continue
+            
             j = random.randint(0, i)
             if j < k:
                 selected_lines[j] = line.strip()
-    
+        
     selected_maps = []
     for line in selected_lines:
-        _, map, cluster_size = line.split()
+        map, cluster_size = line.split()
         selected_maps.append(map)
     return selected_maps
                 

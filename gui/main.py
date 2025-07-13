@@ -32,7 +32,7 @@ log_file = open(log_filename, "w", buffering=1)
 save_solution_log = False
 
 mode = 0
-maps = DESIGNED_MAP
+maps = get_random_maps('gui/map.txt', MAXIMUM_MAPS)
 map_index = 0
 board = init_board(maps, map_index)
 
