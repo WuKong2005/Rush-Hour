@@ -108,25 +108,25 @@ This feature is used for debugging, storing solution history, and additional ana
 ### GENERAL INFORMATION
 
 At the beginning of the file, it will contain general information including:
-- **Number of read maps**: Total number of maps in the program  
-- **List of read maps**: includes strings representing each map
+- `Number of read maps`: Total number of maps in the program  
+- ``List of read maps``: includes strings representing each map
 
 ### DETAIL INFORMATION
 
 In each program run, after the user finishes selecting the map and algorithm and starts the search process, the file will display the following information:
-- **Map index**: the order number of the selected map in the list of maps (e.g., #0,... #12)  
-- **Map description**: the string representing the selected map  
-- **Algorithm**: the selected algorithm
+- ``Map index``: the order number of the selected map in the list of maps (e.g., #0,... #12)  
+- ``Map description``: the string representing the selected map  
+- ``Algorithm``: the selected algorithm
 
 After the search process is completed, the file will display additional information depending on the result:
 - **If the algorithm finds a solution**:
-  - **Result**: Success  
-  - **Number of steps**: total number of moves to reach the solution  
-  - **Time required(s)**: time spent on the search  
-  - **List of steps**: list of moves, written in the format [Vehicle symbol][+ (forward) or - (backward)][number of steps (default is 1)], e.g., `A+1`: vehicle A moves forward 1 step
-  
+  - ``Result``: Success  
+  - ``Number of steps``: total number of moves to reach the solution  
+  - ``Time required(s)``: time spent on the search  
+  - ``List of steps``: list of moves, written in the format [Vehicle symbol][+ (forward) or - (backward)][number of steps (default is 1)], e.g., `A+1`: vehicle A moves forward 1 step
+
 - **If the algorithm does not find a solution**:
-  - **Result**: Failure  
+  - ``Result``: Failure  
   - And there will be no information such as number of steps, search time, or list of steps
 
 There may be multiple runs in one program session; each run will be recorded in the file and clearly separated.
